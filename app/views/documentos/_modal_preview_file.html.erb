@@ -1,0 +1,51 @@
+<div class="modal-header modal-header-success">
+  <div class="col-md-8 text-left">
+    <h6 class="modal-title" id="myModalLabel2" ><strong><%= @completo.codigo %><%= format_digitos(@completo.correlativo) %>: <%= @completo.nombre %></strong></h6>
+    <!--<h5 class="modal-title" id="myModalLabel"><= @tituloModal %></h5>-->
+  </div>
+  <div class="col-md-4 text-right">
+    <%= @iconito.html_safe %>
+  </div>
+</div>
+
+<% if @docto_for_preview.content_type == 'application/pdf' %>
+  <div class="modal-body text-center">
+    <div class="col-md-12">
+      <div class="row">
+        <iframe src="<%= rails_blob_path(@docto_for_preview, disposition: :inline) %>#view=FitH&toolbar=0&navpanes=0&scrollbar=0" height="500px" width="100%" allowfullscreen webkitallowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+<% end %>
+  
+<div class="modal-footer modal-header-success">
+  <% if @docto_for_download .content_type == 'application/pdf' %>
+    <% if tiene_permiso("BOTON DESCARGAR PDF", "VER") %>
+      <%= link_to rails_blob_path(@docto_for_download, disposition: "attachment"), type: "button", target: "_blank", class: "#{@class_btn_download}" do %>
+        <%= @icono_descarga.html_safe %>
+        <span><%= @titulo_btn_download %></span>
+      <% end %>
+    <% end %>
+    <% elsif @docto_for_download .content_type == 'application/msword' || @docto_for_download .content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' %>
+    <% if tiene_permiso("BOTON DESCARGAR WORD", "VER") %>
+      <%= link_to rails_blob_path(@docto_for_download, disposition: "attachment"), type: "button", target: "_blank", class: "#{@class_btn_download}" do %>
+        <%= @icono_descarga.html_safe %>
+        <span><%= @titulo_btn_download %></span>
+      <% end %>
+    <% end %>
+  <% elsif @docto_for_download .content_type == 'application/vnd.ms-excel' || @docto_for_download .content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+    <% if tiene_permiso("BOTON DESCARGAR EXCEL", "VER") %>
+      <%= link_to rails_blob_path(@docto_for_download, disposition: "attachment"), type: "button", target: "_blank", class: "#{@class_btn_download}" do %>
+        <%= @icono_descarga.html_safe %>
+        <span><%= @titulo_btn_download %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">
+        <span class="icon text-red-50">
+          <i class="fas fa-times-circle"></i>
+        </span>
+    Cerrar
+  </button>
+</div>

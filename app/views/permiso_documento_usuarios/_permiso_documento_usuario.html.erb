@@ -1,0 +1,11 @@
+<tr> 
+  <td class="text-center"><%= clasifica_documento_info(permiso_documento_usuario) %></td>
+  <td class="text-center"><%= usuario_sistema_info(permiso_documento_usuario) %></td>
+  <td class="text-center"><%= proceso_proceso_info(permiso_documento_usuario) %></td>
+  <td class="text-center"><%= usuario_tipo_documento_info(permiso_documento_usuario) %></td>
+  <td class="text-center">
+    <%= check_box_tag "documentos_ids[]", permiso_documento_usuario.id, false, usuario_checkbox_attributes(permiso_documento_usuario) %>
+    <%= usuario_estado_icon(permiso_documento_usuario) %>
+    <%= usuario_documento_info(permiso_documento_usuario) %>
+  </td>
+</tr>

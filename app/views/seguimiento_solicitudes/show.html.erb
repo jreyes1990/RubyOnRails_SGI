@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha seguimiento:</strong>
+  <%= @seguimiento_solicitud.fecha_seguimiento %>
+</p>
+
+<p>
+  <strong>Version:</strong>
+  <%= @seguimiento_solicitud.version %>
+</p>
+
+<p>
+  <strong>Fecha vigencia:</strong>
+  <%= @seguimiento_solicitud.fecha_vigencia %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @seguimiento_solicitud.descripcion %>
+</p>
+
+<p>
+  <strong>Estado documento:</strong>
+  <%= @seguimiento_solicitud.estado_documento_id %>
+</p>
+
+<p>
+  <strong>Etapa seguimiento:</strong>
+  <%= @seguimiento_solicitud.etapa_seguimiento_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @seguimiento_solicitud.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @seguimiento_solicitud.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @seguimiento_solicitud.estado %>
+</p>
+
+<p>
+  <strong>Solicitud cambio:</strong>
+  <%= @seguimiento_solicitud.solicitud_cambio_id %>
+</p>
+
+<%= link_to 'Edit', edit_seguimiento_solicitud_path(@seguimiento_solicitud) %> |
+<%= link_to 'Back', seguimiento_solicitudes_path %>

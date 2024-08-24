@@ -1,0 +1,2 @@
+class BitacoraAcceso < ApplicationRecord
+end

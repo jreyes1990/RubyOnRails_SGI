@@ -1,0 +1,45 @@
+<div class="col-12 text-center">
+  <h5><strong>DATOS DE SOLICITUD DE CAMBIO</strong></h5>
+  <hr>
+</div>
+
+<form>
+  <div class="row">
+    <div class="col-md-2 text-center">
+      <div class="form-group">
+        <label for="CodigoInput"><br>CODIGO:</label>
+        <input type="text" class="form-control text-center" id="CodigoInput" value="<%= @solicitud_cambio.documento.codigo %> <%= @solicitud_cambio.documento.correlativo %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="NombreInput"><br>NOMBRE:</label>
+        <input type="text" class="form-control" id="NombreInput" value="<%= @solicitud_cambio.documento.nombre %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-1 text-center">
+      <div class="form-group">
+        <label for="VersionInput"><br>VERSION:</label>
+        <input type="text" class="form-control text-center" id="VersionInput" value="<%= @solicitud_cambio.documento.version %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-2 text-center">
+      <div class="form-group">
+        <label for="FechaVigenciaInput">FECHA<br>VIGENCIA:</label>
+        <input type="text" class="form-control text-center" id="FechaVigenciaInput" value="<%= @solicitud_cambio.documento.fecha_vigencia %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-1 text-center">
+      <div class="form-group">
+        <label for="IdInput"><br># SOLICITUD:</label>
+        <input type="text" class="form-control text-center" id="IdInput" value="<%= @solicitud_cambio.id %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-2 text-center">
+      <div class="form-group">
+        <label for="FechaVigenciaInput">FECHA<br>SEGUIMIENTO:</label>
+        <input type="date" class="form-control text-center" id="FechaSolicitudInput" value="<%= fecha_actual_ot %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,15 @@
+<div class="smartwizard">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link <%= @classActive1 %> " href="#step-1">
+                <%= @tituloActive1 %>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <%= @classActive2 %>" href="#step-2">
+                <%= @tituloActive2 %>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content" style="height: auto !important">
+        <div id="step-<%= @stepActive %>" class="tab-pane" role="tabpanel" aria-labelledby="step-<%= @stepActive %>">

@@ -1,0 +1,92 @@
+<!-- Inicio labores -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Gestión de Labores</h6>
+    </div>
+    <div class="card-body">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+                            <%= link_to nueva_labor_path, class: "btn btn-success btn-sm" do %>
+                            <span class="icon text-50">
+                                <i class="fas fa-plus-circle"></i>
+                            </span>
+                            <span class="text">AGREGAR</span>
+                            <%end%>
+                            <% end %>
+                            <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+                            <span class="icon text-red-50">
+                                <i class="fas fa-home"></i>
+                            </span>
+                            <span class="text">INICIO</span>
+                            <%end%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br />
+                            <div class="col-md-12 table-responsive">
+                                <table id="datatable" class="table table-hover table-sm table-bordered">
+                                    <thead class="thead-light">
+                                        <tr style="text-align:center">
+                                            <th> Id </th>
+                                            <th> Nombre</th>
+                                            <th> Tiempo (HH:MM)</th>
+                                            <th> Personas</th>
+                                            <th> Descripción</th>
+                                            <th> Estado</th>
+                                            <th> </th>
+                                            <th> </th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% @labors.each do |labor| %>
+                                        <tr>
+                                            <td style="text-align:center"> <%= labor.id %> </td>
+                                            <td><%= labor.nombre %></td>
+                                            <td style="text-align:center"><%= labor.tiempo %></td>
+                                            <td style="text-align:center"><%= labor.numero_personas %></td>
+                                            <td><%= labor.descripcion %></td>
+                                            <td style="text-align:center"><%= labor.estado %></td>
+
+                                            <td style="text-align:center">
+
+                                                <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
+                                                    <%= link_to edit_lobor_path(labor.id), class: "btn btn-outline-info btn-sm ",:"data-toggle" => "popover", :"data-content" => "Editar Labor", :"data-trigger" => "hover", :"data-placement" => "top"  do %>
+                                                    <i class="fas fa-edit"></i>
+                                                    <%end%>
+                                                <% end %>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
+                                                    <%= link_to mostrar_add_articulos_path(labor.id), class: "btn btn-outline-success btn-sm ",:"data-toggle" => "popover", :"data-content" => "Editar Articulos", :"data-trigger" => "hover", :"data-placement" => "top"  do %>
+                                                    <i class="fas fa-list-alt"></i>
+                                                    <%end%>
+                                                <% end %>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <% if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+                                                    <%= link_to  labor, class: "btn btn-outline-danger btn-sm ",  method: :delete, data: {confirm: '¿Estas seguro de eliminar el registro?'} do %>
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    <%end%>
+                                                <% end %>
+
+                                            </td>
+                                        </tr>
+                                        <% end %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>

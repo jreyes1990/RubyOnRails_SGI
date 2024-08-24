@@ -1,0 +1,32 @@
+
+<h1 class="h4 text-white mb-4">BIENVENIDO</h1>
+<br/>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="form-group">
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-user", placeholder: "Ingrese su correo..." %>
+    </div>
+    <br>
+
+    <div class="input-group">
+      <%= f.password_field :password, autocomplete: "current-password" , class: "form-control form-control-user", placeholder: "Contraseña", id:'txtPassword'  %>
+      <div class="input-group-append">
+        <button id="show_password" class="btn btn-success" type="button"> <span class="fa fa-eye-slash icon"></span> </button>
+      </div>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="form-group">
+        <div class="custom-control custom-checkbox small">
+        </div>
+      </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit "Inicio Sesión", class: "btn btn-success btn-user btn-block" %>
+    </div>
+  <% end %>
+    <hr>
+      <div class="text-center">
+        <%= render "devise/shared/links" %>
+      </div>

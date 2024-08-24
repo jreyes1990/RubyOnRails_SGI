@@ -1,0 +1,2 @@
+module BitacoraDocumentosHelper
+end

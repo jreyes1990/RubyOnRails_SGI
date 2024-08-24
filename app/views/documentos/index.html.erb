@@ -1,0 +1,141 @@
+<!-- Inicio Documentos -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Buzón de Documentos Autorizados</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <%= simple_form_for :filtro_proceso_form, :url => {:controller => "documentos", :action => "filtro_proceso_documento"} do |f| %>
+        <div class="row">
+          <div class="col-md-8 text-right">
+            <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+              <%= link_to new_documento_path, class: "btn btn-success btn-sm" do %>
+                <span class="icon text-50">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+                <span class="text">AGREGAR</span>
+              <% end %>
+            <% end %>
+            <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+                <span class="icon text-red-50">
+                    <i class="fas fa-home"></i>
+                </span>
+              <span class="text">INICIO</span>
+            <% end %>
+            | 
+            <%= f.button :submit, @tituloBotonSubmit, :class => @colorBotonSubmit %>
+            <%= link_to 'LIMPIAR FILTRO', borrar_filtro_proceso_documento_path, class: "btn btn-warning btn-sm", method: :post %>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group" style="text-align: left !important;">
+              <%= f.input :proceso_id, as: :select, collection: @lista_procesos, value_method: :proceso_id, label_method: :nombre_proceso, label: false, include_blank: "Seleccione un Proceso", input_html: { class: "select2-proceso", id: "codigo_proceso", multiple: true, include_blank: true}, required: false, include_hidden: false, :selected => @proceso_select %>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12 table-responsive-sm">
+        <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") && tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+          <table id="documento-datatable" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%" data-source="<%= documentos_path(format: :json) %>">
+            <thead class="thead-light">
+            <tr>
+              <th>Id</th>
+              <th class="text-center">Sistema</th>
+              <th class="text-center">Proceso</th>
+              <th class="text-center" style="width: 12%;">Codigo</th>
+              <th>Nombre</th>
+              <th class="text-center">Tipo<br>Documento</th>
+              <th class="text-center">Version</th>
+              <th class="text-center">Fecha</th>
+              <% if tiene_permiso("BOTON VER PDF", "VER") %>
+              <th class="text-center" style="width: 3%;">PDF</th>
+              <% else %>
+              <th></th>
+              <% end %>
+              <% if tiene_permiso("BOTON VER WORD", "VER") %>
+              <th class="text-center" style="width: 3%;">WORD</th>
+              <% else %>
+              <th></th>
+              <% end %>
+              <% if tiene_permiso("BOTON VER EXCEL", "VER") %>
+              <th class="text-center" style="width: 3%;">EXCEL</th>
+              <% else %>
+              <th></th>
+              <% end %>
+              <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
+              <th class="text-center" style="width: 3%;">Editar</th>
+              <% else %>
+              <th></th>
+              <% end %>
+              <% if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+              <th class="text-center" style="width: 3%;">Eliminar</th>
+              <% else %>
+              <th></th>
+              <% end %>
+            </tr>
+            </thead>
+
+            <tbody>
+            
+            </tbody>
+          </table>
+        <% else %>
+          <% if tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-limitado-datatable"
+          elsif tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && !tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-ver-pdf-word-datatable"
+          elsif tiene_permiso("BOTON VER PDF", "VER") && !tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-ver-pdf-excel-datatable"
+          elsif tiene_permiso("BOTON VER PDF", "VER") && !tiene_permiso("BOTON VER WORD", "VER") && !tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-ver-pdf-datatable"
+          elsif !tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-ver-word-excel-datatable"
+          elsif !tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && !tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-ver-word-datatable"
+          elsif !tiene_permiso("BOTON VER PDF", "VER") && !tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
+            datatable_documento = "documento-ver-excel-datatable"
+          else
+            datatable_documento = "documento-sin-botones-datatable"
+          end %>
+
+          <table id="<%= datatable_documento %>" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%" data-source="<%= documentos_path(format: :json) %>">
+            <thead class="thead-light">
+            <tr>
+              <th class="text-center">Clasificación</th>
+              <th class="text-center">Sistema</th>
+              <th class="text-center">Proceso</th>
+              <th class="text-center" style="width: 12%;">Codigo</th>
+              <th>Nombre</th>
+              <th class="text-center">Version</th>
+              <th class="text-center">Fecha</th>
+              <% if tiene_permiso("BOTON VER PDF", "VER") %>
+              <th class="text-center" style="width: 3%;">PDF</th>
+              <% end %>
+              <% if tiene_permiso("BOTON VER WORD", "VER") %>
+              <th class="text-center" style="width: 3%;">WORD</th>
+              <% end %>
+              <% if tiene_permiso("BOTON VER EXCEL", "VER") %>
+              <th class="text-center" style="width: 3%;">EXCEL</th>
+              <% end %>
+            </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-content-preview-file" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>

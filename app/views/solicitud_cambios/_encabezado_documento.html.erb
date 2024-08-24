@@ -1,0 +1,45 @@
+<div class="col-12 text-center">
+  <h5><strong>DATOS DEL DOCUMENTO</strong></h5>
+  <hr>
+</div>
+
+<form>
+  <div class="row">
+    <div class="col-md-1 text-center">
+      <div class="form-group">
+        <label for="IdInput"><br>ID:</label>
+        <input type="text" class="form-control text-center" id="IdInput" value="<%= @documento_solicitud.id %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-2 text-center">
+      <div class="form-group">
+        <label for="CodigoInput"><br>CODIGO:</label>
+        <input type="text" class="form-control text-center" id="CodigoInput" value="<%= @documento_solicitud.codigo %> <%= @documento_solicitud.correlativo %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="NombreInput"><br>NOMBRE:</label>
+        <input type="text" class="form-control" id="NombreInput" value="<%= @documento_solicitud.nombre %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-1 text-center">
+      <div class="form-group">
+        <label for="VersionInput"><br>VERSION:</label>
+        <input type="text" class="form-control text-center" id="VersionInput" value="<%= @documento_solicitud.version %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-2 text-center">
+      <div class="form-group">
+        <label for="FechaVigenciaInput"><br>FECHA:</label>
+        <input type="text" class="form-control text-center" id="FechaVigenciaInput" value="<%= @documento_solicitud.fecha_vigencia %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+    <div class="col-md-2 text-center">
+      <div class="form-group">
+        <label for="FechaVigenciaInput">FECHA<br>SOLICITUD:</label>
+        <input type="date" class="form-control text-center" id="FechaSolicitudInput" value="<%= fecha_actual_ot %>" placeholder="Example input placeholder" disabled>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,103 @@
+<!-- Inicio caracteristica por equipos -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Labor <%= @labor.id %> en curso</h6>
+  </div>
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="card-body">
+          <%= render 'wizardnav' %>
+          <div class="col-md-12">
+            <div class="col-12 text-center">
+              <h5><strong>DATOS DEL LABOR</strong></h5>
+              <hr>
+            </div>
+            <div class="row" style="background-color: #FDFBF0; padding: 20px; border-radius: 5px">
+
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="nombreLabor">Nombre</label>
+                  <input type="text" class="form-control" id="nombreLabor" value="<%= @labor.nombre %>" disabled>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="descripcionLabor">Descripción</label>
+                  <input type="text" class="form-control" id="descripcionLabor" value="<%= @labor.descripcion %>"
+                    disabled>
+                </div>
+              </div>
+            </div>
+            <br>
+
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-6">
+                  <h5><strong>LISTADO DE ARTICULOS</strong></h5>
+                </div>
+                <div class="col-6">
+                  <div class="text-right">
+                    <%= link_to modal_articulos_path(@labor.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-content-articulos', class: "btn btn-success btn-sm"} do %>
+                    <span class="icon text-50">
+                      <i class="fas fa-plus-circle"></i>
+                    </span>
+                    <span class="text">AGREGAR ARTÍCULO</span>
+                    <%end%>
+                    <%= link_to labors_path, class: "btn btn-success btn-sm" do %>
+                    <span class="icon text-50">
+                      <i class="fas fa-check-circle"></i>
+                    </span>
+                    <span class="text">FINALIZAR</span>
+                    <%end%>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              <div class=" col-md-12 table-responsive">
+
+                <br>
+                <table id="datatable" class="table table-hover table-sm table-bordered">
+                  <thead class="thead-light">
+                    <tr style="text-align:center">
+                      <th> Id </th>
+                      <th> Nombre</th>
+                      <th> Cantidad</th>
+                      <th> Unidad Medida</th>
+                      <th> Descripción</th>
+                      <th> Estado</th>
+                      <th> Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @laborarticulos.each do |l| %>
+                    <tr>
+                      <td style="text-align:center"> <%= l.id %> </td>
+                      <td> <%= l.articulo.nombre %> </td>
+                      <td style="text-align:center"> <%= l.cantidad %> </td>
+                      <td style="text-align:center"> <%= l.articulo.unidad_medida %> </td>
+                      <td> <%= l.articulo.descripcion %> </td>
+                      <td style="text-align:center"> <%= l.estado %> </td>
+                      <td style="text-align:center">
+                        <%= link_to  inactivar_articulo_path(:articulo => l.id, :labor_id => @labor.id ), class: "btn btn-outline-danger btn-sm ", data: { confirm: '¿Estas seguro de eliminar el registro?' } do %>
+                        <i class="fas fa-trash-alt"></i>
+                        <%end%>
+                      </td>
+                    </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <br>
+          <%= render 'wizardclose' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<div id="modal-content-articulos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true"></div>

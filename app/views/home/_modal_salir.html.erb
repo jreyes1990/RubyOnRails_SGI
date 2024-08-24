@@ -1,0 +1,38 @@
+<div class="modal-body">
+  <div class="col-12 text-center">
+    <%= image_tag("alert.png", height: '70', width: '')%>
+    <br>
+    <br>
+    <h6>¿DESEA CERRAR SESIÓN?</h6>
+    <p>Necesitará iniciar sesión para trabajar en el sistema.</p>
+  </div>
+</div>
+
+<div class="col-12 text-center">
+  <div class="row">
+    <div class="col-2">
+    </div>
+
+    <div class="col-4">
+      <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+      <span class="icon text-red-50">
+        <i class="fas fa-times-circle"></i>
+      </span>
+      <span class="text">NO</span>
+      <%end%>
+    </div>
+    <div class="col-4">
+      <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-success btn-sm" do %>
+      <span class="icon text-red-50">
+        <i class="fas fa-sign-out-alt"></i>
+      </span>
+      <span class="text">SI</span>
+      <%end%>
+    </div>
+
+    <div class="col-2">
+    </div>
+  </div>
+</div>
+<br>
+<br>

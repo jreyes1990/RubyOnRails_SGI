@@ -1,0 +1,73 @@
+<!-- Inicio Personas - Area -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Configuración Usuario - Área</h6>
+  </div>
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+            <%= link_to new_personas_area_path, class: "btn btn-success btn-sm" do %>
+              <span class="icon text-50">
+                <i class="fas fa-plus-circle"></i>
+              </span>
+              <span class="text">AGREGAR</span>
+            <% end %>
+          <% end %>
+          <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+            <span class="icon text-red-50">
+              <i class="fas fa-home"></i>
+            </span>
+            <span class="text">INICIO</span>
+          <% end %>
+        </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-md-12 table-responsive-sm">
+          <table id="datatable_usuario_area" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%">
+            <thead class="thead-light">
+              <tr>
+                <th class="text-center">ID</th>
+                <th>Usuario</th>
+                <th>Área</th>
+                <th>Empresa</th>
+                <th class="text-center">Estado</th>
+                <th class="text-center">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @personas_areas.each do |personas_area| %>
+                <tr>
+                  <td class="text-center"><%= personas_area.id %></td>
+                  <td><%= "#{personas_area.persona.nombre} #{personas_area.persona.apellido}" %></td>
+                  <td><%= personas_area.area.nombre %></td>
+                  <td><%= personas_area.area.empresa.nombre %></td>
+                  <td class="text-center"><%= personas_area.estado %></td>
+
+                  <td class="text-center">
+                    <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
+                      <%= link_to edit_personas_area_path(personas_area), class: "btn btn-outline-info btn-sm " do %>
+                        <i class="fas fa-edit"></i>
+                        <%end%>
+                      <% end %>
+
+                      <% if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+                        <%= link_to  inactivar_usuario_area_path(:id => personas_area.id), class: "btn btn-outline-danger btn-sm ", data: { confirm: 'Se eliminara' } do %>
+                          <i class="fas fa-trash-alt"></i>
+                          <%end%>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<!-- Inicio Rol -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Gestión de Rol</h6>
+  </div>
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+            <%= link_to new_rol_path, class: "btn btn-success btn-sm" do %>
+                <span class="icon text-50">
+                    <i class="fas fa-plus-circle"></i>
+                </span>
+              <span class="text">AGREGAR</span>
+            <% end %>
+          <% end %>
+
+          <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+            <span class="icon text-red-50">
+                <i class="fas fa-home"></i>
+            </span>
+            <span class="text">INICIO</span>
+          <% end %>
+        </div>
+      </div>
+      <br/>
+
+      <div class="row">
+        <div class="col-md-12 table-responsive-sm">
+          <table id="datatable" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%">
+            <thead class="thead-light">
+            <tr>
+              <th class="text-center"> id</th>
+              <th> Nombre</th>
+              <th> Descripción</th>
+              <th class="text-center"> Estado</th>
+              <th class="text-center"> Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @roles.each do |rol| %>
+              <tr>
+                <td class="text-center"> <%= rol.id %> </td>
+                <td> <%= rol.nombre %> </td>
+                <td> <%= rol.descripcion %> </td>
+                <td class="text-center"> <%= rol.estado %> </td>
+                <td class="text-center">
+                  <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
+                    <% if rol.estado == 'A' %>
+                      <%= link_to edit_rol_path(rol), class: "btn btn-outline-info btn-sm " do %>
+                        <i class="fas fa-edit"></i>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+
+                  <% if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+                    <% if rol.estado == 'A' %>
+                      <%= link_to inactivar_rol_path(:id => rol.id), class: "btn btn-outline-danger btn-sm ", data: { confirm: 'Se inactivara' } do %>
+                        <i class="fas fa-trash-alt"></i>
+                      <% end %>
+                    <% else %>
+                      <%= link_to activar_rol_path(:id => rol.id), class: "btn btn-outline-success btn-sm ", data: { confirm: 'Se activara' } do %>
+                        <i class="fas fa-trash-restore-alt"></i>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

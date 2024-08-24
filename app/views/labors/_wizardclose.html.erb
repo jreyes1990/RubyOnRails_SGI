@@ -1,0 +1,14 @@
+</div>
+</div>
+</div>
+
+<script>
+  document.addEventListener("turbolinks:load", () => {
+    $('.smartwizard').smartWizard("loader", "show");
+    $('.smartwizard').smartWizard("goToStep", <%= @stepActive.to_i - 1 %>);
+
+    setTimeout(function () {
+      $('.smartwizard').smartWizard("loader", "hide");
+    }, 1000);
+  });
+</script>

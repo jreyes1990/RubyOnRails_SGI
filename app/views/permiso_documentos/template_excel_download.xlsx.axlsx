@@ -1,0 +1,31 @@
+wb = xlsx_package.workbook
+wb.styles do |s|
+  estilo = s.add_style bg_color: "EFEFEF", fg_color: "00", sz: 14, alignment: { horizontal: :center }
+  header = s.add_style bg_color: 'DD', sz: 16, b: true, alignment: { horizontal: :center }
+  highlight_cell = s.add_style(bg_color: "EFEFEF", sz: 12, border: Axlsx::STYLE_THIN_BORDER, alignment: { horizontal: :center })
+  nombre_cell = s.add_style(bg_color: "EFEFEF", fg_color: '00', sz: 12, border: Axlsx::STYLE_THIN_BORDER, alignment: { horizontal: :center })
+  borde_tabla = s.add_style(border: Axlsx::STYLE_THIN_BORDER, alignment: { horizontal: :left })
+  borde_tabla_color = s.add_style(bg_color: "F9E79F", fg_color: '00', border: Axlsx::STYLE_THIN_BORDER, alignment: { horizontal: :center })
+
+  columnasHoja = @nombre_columnas
+  ids = @ids_columnas
+  
+  # Exporta datos Permiso Documentos
+  wb.add_worksheet(name: "#{@titulo_formato_excel}") do |sheet|
+    @arrayEstilo = []            
+                                        
+    sheet.add_row @nombre_columnas, :style => [nombre_cell, nombre_cell, nombre_cell, nombre_cell, nombre_cell, nombre_cell, nombre_cell, nombre_cell, nombre_cell] # :style => @arrayEstilo  
+
+    @modulo_permiso_documento.each do |permiso_documento|
+      sheet.add_row [permiso_documento.nombre_clasifica_documento, 
+                     permiso_documento.nombre_tipo_sistema, 
+                     permiso_documento.nombre_proceso, 
+                     permiso_documento.nombre_tipo_documento, 
+                     "#{permiso_documento.codigo_documento}: #{permiso_documento.nombre_documento}", 
+                     "#{permiso_documento.estado_permiso}", 
+                     "#{permiso_documento.created_at}"
+                     ], style: borde_tabla
+    end
+
+  end
+end

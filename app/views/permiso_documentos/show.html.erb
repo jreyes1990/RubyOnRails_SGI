@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Tipo usuario:</strong>
+  <%= @permiso_documento.tipo_usuario_id %>
+</p>
+
+<p>
+  <strong>Proceso:</strong>
+  <%= @permiso_documento.proceso_id %>
+</p>
+
+<p>
+  <strong>Tipo sistema:</strong>
+  <%= @permiso_documento.tipo_sistema_id %>
+</p>
+
+<p>
+  <strong>Documento:</strong>
+  <%= @permiso_documento.documento_id %>
+</p>
+
+<p>
+  <strong>Todo:</strong>
+  <%= @permiso_documento.todo %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @permiso_documento.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @permiso_documento.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @permiso_documento.estado %>
+</p>
+
+<%= link_to 'Edit', edit_permiso_documento_path(@permiso_documento) %> |
+<%= link_to 'Back', permiso_documentos_path %>

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tipo_sistema.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @tipo_sistema.descripcion %>
+</p>
+
+<p>
+  <strong>Abreviatura:</strong>
+  <%= @tipo_sistema.abreviatura %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @tipo_sistema.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @tipo_sistema.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @tipo_sistema.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tipo_sistema.estado %>
+</p>
+
+<%= link_to 'Edit', edit_tipo_sistema_path(@tipo_sistema) %> |
+<%= link_to 'Back', tipo_sistemas_path %>

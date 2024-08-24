@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @etapa_documento.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @etapa_documento.descripcion %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @etapa_documento.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @etapa_documento.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @etapa_documento.estado %>
+</p>
+
+<%= link_to 'Edit', edit_etapa_documento_path(@etapa_documento) %> |
+<%= link_to 'Back', etapa_documentos_path %>

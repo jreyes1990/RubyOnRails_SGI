@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tipo_usuario.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @tipo_usuario.descripcion %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @tipo_usuario.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @tipo_usuario.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @tipo_usuario.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tipo_usuario.estado %>
+</p>
+
+<%= link_to 'Edit', edit_tipo_usuario_path(@tipo_usuario) %> |
+<%= link_to 'Back', tipo_usuarios_path %>

@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Codigo:</strong>
+  <%= @documento.codigo %>
+</p>
+
+<p>
+  <strong>Correlativo:</strong>
+  <%= @documento.correlativo %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @documento.nombre %>
+</p>
+
+<p>
+  <strong>Fecha vigencia:</strong>
+  <%= @documento.fecha_vigencia %>
+</p>
+
+<p>
+  <strong>Version:</strong>
+  <%= @documento.version %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @documento.descripcion %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @documento.empresa_id %>
+</p>
+
+<p>
+  <strong>Estado documento:</strong>
+  <%= @documento.estado_documento_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @documento.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @documento.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @documento.estado %>
+</p>
+
+<p>
+  <strong>Proceso:</strong>
+  <%= @documento.proceso_id %>
+</p>
+
+<p>
+  <strong>Tipo sistema:</strong>
+  <%= @documento.tipo_sistema_id %>
+</p>
+
+<p>
+  <strong>Tipo documento:</strong>
+  <%= @documento.tipo_documento_id %>
+</p>
+
+<%= link_to 'Edit', edit_documento_path(@documento) %> |
+<%= link_to 'Back', documentos_path %>

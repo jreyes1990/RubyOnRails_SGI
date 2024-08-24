@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tipo_documento.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @tipo_documento.descripcion %>
+</p>
+
+<p>
+  <strong>Abreviatura:</strong>
+  <%= @tipo_documento.abreviatura %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @tipo_documento.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @tipo_documento.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @tipo_documento.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tipo_documento.estado %>
+</p>
+
+<%= link_to 'Edit', edit_tipo_documento_path(@tipo_documento) %> |
+<%= link_to 'Back', tipo_documentos_path %>

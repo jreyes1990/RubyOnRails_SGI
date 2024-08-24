@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @actividad.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @actividad.descripcion %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @actividad.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @actividad.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @actividad.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @actividad.estado %>
+</p>
+
+<p>
+  <strong>Proceso:</strong>
+  <%= @actividad.proceso_id %>
+</p>
+
+<%= link_to 'Edit', edit_actividad_path(@actividad) %> |
+<%= link_to 'Back', actividades_path %>

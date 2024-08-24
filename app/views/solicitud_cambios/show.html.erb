@@ -1,0 +1,42 @@
+<p>
+  <strong>Fecha solicitud:</strong>
+  <%= @solicitud_cambio.fecha_solicitud %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @solicitud_cambio.descripcion %>
+</p>
+
+<p>
+  <strong>Estado documento:</strong>
+  <%= @solicitud_cambio.estado_documento_id %>
+</p>
+
+<p>
+  <strong>Etapa solicitud:</strong>
+  <%= @solicitud_cambio.etapa_solicitud_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @solicitud_cambio.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @solicitud_cambio.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @solicitud_cambio.estado %>
+</p>
+
+<p>
+  <strong>Documento:</strong>
+  <%= @solicitud_cambio.documento_id %>
+</p>
+
+<%= link_to 'Edit', edit_solicitud_cambio_path(@solicitud_cambio) %> |
+<%= link_to 'Back', solicitud_cambios_path %>

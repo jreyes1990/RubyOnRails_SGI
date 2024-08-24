@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @macro_proceso.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @macro_proceso.descripcion %>
+</p>
+
+<p>
+  <strong>Abreviatura:</strong>
+  <%= @macro_proceso.abreviatura %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @macro_proceso.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @macro_proceso.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @macro_proceso.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @macro_proceso.estado %>
+</p>
+
+<%= link_to 'Edit', edit_macro_proceso_path(@macro_proceso) %> |
+<%= link_to 'Back', macro_procesos_path %>

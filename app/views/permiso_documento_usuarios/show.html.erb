@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @permiso_documento_usuario.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @permiso_documento_usuario.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @permiso_documento_usuario.estado %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @permiso_documento_usuario.user_id %>
+</p>
+
+<p>
+  <strong>Permiso documento:</strong>
+  <%= @permiso_documento_usuario.permiso_documento_id %>
+</p>
+
+<%= link_to 'Edit', edit_permiso_documento_usuario_path(@permiso_documento_usuario) %> |
+<%= link_to 'Back', permiso_documento_usuarios_path %>

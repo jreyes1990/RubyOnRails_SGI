@@ -1,0 +1,30 @@
+<div class="modal-header modal-header-success">
+  <div class="col-8 text-left">
+    <h5 class="modal-title" id="myModalLabel"><%= @tituloModal %></h5>
+  </div>
+  <div class="col-4 text-right">
+    <%= @iconito.html_safe %>
+  </div>
+</div>
+<% if @docto_for_preview.content_type == 'application/pdf' %>
+  <div class="modal-body text-center">
+
+    <embed src="<%= rails_blob_path(@docto_for_preview, disposition: :inline) %>#toolbar=0&navpanes=0&scrollbar=0" height="500" width="100%" allowfullscreen webkitallowfullscreen>
+
+  </div>
+<% end %>
+
+<div class="modal-footer modal-header-success">
+
+  <%= link_to rails_blob_path(@docto_for_download, disposition: "attachment"), type: "button", target: "_blank", class: "#{@class_btn_download}" do %>
+    <%= @icono_descarga.html_safe %>
+    <span><%= @titulo_btn_download %></span>
+  <% end %>
+
+  <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">
+        <span class="icon text-red-50">
+          <i class="fas fa-times-circle"></i>
+        </span>
+    Cerrar
+  </button>
+</div>

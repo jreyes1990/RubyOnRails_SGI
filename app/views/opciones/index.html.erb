@@ -1,0 +1,84 @@
+<!-- Inicio Opciones -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Gestión de Opciones por Menú </h6>
+  </div>
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+            <%= link_to new_opcion_path, class: "btn btn-success btn-sm" do %>
+              <span class="icon text-50">
+                  <i class="fas fa-plus-circle"></i>
+              </span>
+              <span class="text">AGREGAR</span>
+            <% end %>
+          <% end %>
+          <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+            <span class="icon text-red-50">
+                <i class="fas fa-home"></i>
+            </span>
+            <span class="text">INICIO</span>
+          <% end %>
+        </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-md-12 table-responsive">
+          <table id="datatable_opcion" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%">
+            <thead class="thead-light">
+            <tr>
+              <th class="text-center"> id</th>
+              <th class="text-center"> Icono</th>
+              <th> Nombre</th>
+              <th> Descripción</th>
+              <th> Path</th>
+              <th> Controlador</th>
+              <th> Menu</th>
+              <th class="text-center"> Estado</th>
+              <th class="text-center"> Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @opciones.each do |opcion| %>
+              <tr>
+                <td class="text-center"><%= opcion.id %></td>
+                <td class="text-center"><i class="<%= opcion.icono %>" aria-hidden="true"></i></td>
+                <td class="text-left"><%= opcion.nombre %></td>
+                <td class="text-left"><%= opcion.descripcion %></td>
+                <td><%= opcion.path %></td>
+                <td><%= opcion.controlador %></td>
+                <td><%= opcion.menu.nombre %></td>
+                <td class="text-center"><%= opcion.estado %></td>
+
+                <td class="text-center">
+                  <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
+                    <% if opcion.estado == 'A' %>
+                      <%= link_to edit_opcion_path(opcion), class: "btn btn-outline-info btn-sm " do %>
+                        <i class="fas fa-edit"></i>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                  <% if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+                    <% if opcion.estado == 'A' %>
+                      <%= link_to inactivar_opcion_path(:id => opcion.id), class: "btn btn-outline-danger btn-sm ", data: { confirm: 'Se inactivara' } do %>
+                        <i class="fas fa-trash-alt"></i>
+                      <% end %>
+                    <% else %>
+                      <%= link_to activar_opcion_path(:id => opcion.id), class: "btn btn-outline-success btn-sm ", data: { confirm: 'Se activara' } do %>
+                        <i class="fas fa-trash-restore-alt"></i>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

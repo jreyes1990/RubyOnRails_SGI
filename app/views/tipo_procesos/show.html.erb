@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tipo_proceso.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @tipo_proceso.descripcion %>
+</p>
+
+<p>
+  <strong>Abreviatura:</strong>
+  <%= @tipo_proceso.abreviatura %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @tipo_proceso.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @tipo_proceso.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @tipo_proceso.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tipo_proceso.estado %>
+</p>
+
+<%= link_to 'Edit', edit_tipo_proceso_path(@tipo_proceso) %> |
+<%= link_to 'Back', tipo_procesos_path %>

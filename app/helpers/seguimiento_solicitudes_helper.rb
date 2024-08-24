@@ -1,0 +1,2 @@
+module SeguimientoSolicitudesHelper
+end

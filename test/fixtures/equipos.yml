@@ -1,0 +1,39 @@
+# == Schema Information
+#
+# Table name: equipos
+#
+#  id                :bigint           not null, primary key
+#  tipo_equipo_id    :bigint           not null
+#  orden_trabajo_id  :integer
+#  area_id           :integer
+#  codigo_empleado   :string
+#  nombre_empleado   :string
+#  estado            :string
+#  user_created_id    :integer
+#  user_updated_id    :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  estado_asignacion :string
+#  combo_id          :integer
+#  observacion       :string
+#
+
+one:
+  tipo_equipo: one
+  orden_trabajo_id: 1
+  area_id: 1
+  codigo_empleado: MyString
+  nombre_empleado: MyString
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1
+
+two:
+  tipo_equipo: two
+  orden_trabajo_id: 1
+  area_id: 1
+  codigo_empleado: MyString
+  nombre_empleado: MyString
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1

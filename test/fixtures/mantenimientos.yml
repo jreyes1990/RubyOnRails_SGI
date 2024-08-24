@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: mantenimientos
+#
+#  id                    :bigint           not null, primary key
+#  tipo_mantenimiento_id :bigint           not null
+#  tipo_equipo_id        :bigint           not null
+#  descripcion           :string
+#  estado                :string
+#  area_id               :integer
+#  user_created_id        :integer
+#  user_updated_id        :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+
+one:
+  tipo_mantenimiento: one
+  tipo_equipo: one
+  descripcion: MyString
+  estado: MyString
+  area_id: 1
+  user_created_id: 1
+  user_updated_id: 1
+
+two:
+  tipo_mantenimiento: two
+  tipo_equipo: two
+  descripcion: MyString
+  estado: MyString
+  area_id: 1
+  user_created_id: 1
+  user_updated_id: 1

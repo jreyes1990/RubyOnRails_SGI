@@ -1,0 +1,68 @@
+<!-- Inicio Permiso Documentos -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Gestión de Clasificación Permiso Documento</h6>
+  </div>
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <%= simple_form_for(@permiso_documento) do |f| %>
+            <%= f.error_notification %>
+            <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+            <div class="form-inputs">
+              <div class="row">
+                <div class="col-md-3">
+                  <%= f.association :tipo_usuario, collection: TipoUsuario.where("estado=?", 'A').order('id ASC'), value_method: :id, label_method: :nombre,  label: "Clasificación Documental", include_blank: "Seleccione una Clasificación", input_html: { class: "select2-css", id: 'tipo_usuario_id', require: true } %>
+                </div>
+                <div class="col-md-3">
+                  <%= f.association :tipo_sistema, collection: TipoSistema.where("estado=?", 'A').order('id ASC'), value_method: :id, label_method: :nombre,  label: "Sistema", include_blank: "Seleccione un Sistema", input_html: { class: "select2-multiple select2-sistema-permiso", id: 'tipo_sistema_id', require: true, 'data-endpoint': obtener_procesos_sistema_path, multiple: true, include_blank: false }, include_hidden: false %>
+                </div>
+                <div class="col-md-3">
+                  <%= f.association :proceso, collection: Proceso.where("estado=?", 'A').order('id ASC').limit(0), value_method: :id, label_method: :nombre,  label: "Proceso", include_blank: "Seleccione un Proceso", input_html: { class: "select2-multiple select2-sistema-proceso", id: 'proceso_ids', require: true, 'data-endpoint': obtener_proceso_tipoDocumento_path, multiple: true, include_blank: false}, include_hidden: false  %>
+                  <!--selected: f.object.proceso_id || 0 , cero default-->
+                </div>
+                <div class="col-md-3">
+                  <%= f.association :tipo_documento, collection: TipoDocumento.where("estado=?", 'A').order('id ASC').limit(0), value_method: :id, label_method: :nombre,  label: "Tipo Documento", include_blank: "Seleccione un Tipo Documento", input_html: { class: "select2-multiple select2-tipo-documento", id: 'tipo_documento_ids', require: true, 'data-endpoint': set_tipoDocumento_documento_path, multiple: true, include_blank: false }, include_hidden: false %>
+                </div>
+              </div>
+
+              <%= f.association :documento, collection: Documento.where("estado=?", 'A').order('id ASC').limit(0), value_method: :id, label_method: :informacion_documento, label: "Documento", include_blank: "Seleccione un Documento", input_html: { class: "select2-multiple select2-documento", id: 'documento_id', require: true, multiple: true, include_blank: false }, include_hidden: false %>
+            </div>
+            <br/>
+
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <% if tiene_permiso("BOTON REGISTRAR", "VER") %>
+                <%= button_tag f.submit, class: "btn btn-success btn-sm", data: { controller: 'sweetalert', action: 'click->sweetalert#btnProcesar',
+                                                                                  sweetalert_confirm_alert_value: "#{titulo_permiso_documento}",
+                                                                                  sweetalert_cancel_alert_value: "Cancelado",
+                                                                                  sweetalert_proceso_title_value: "<h3><strong style='color: green;'>Procesando Datos</strong></h3>".html_safe,
+                                                                                  sweetalert_confirm_title_value: '<strong style="color: #1d71b9;">Esta seguro de aplicar los cambios?</strong>',
+                                                                                  sweetalert_confirm_btn_value: '<i class="fas fa-check-circle"></i><strong> Si, ' + "#{titulo_permiso_documento}" + '</strong>',
+                                                                                  sweetalert_confirm_proccess_value: "Aplicando.....",
+                                                                                  sweetalert_cancel_btn_value: '<i class="fas fa-times-circle"></i><strong> No, Cancelar</strong>',
+                                                                                  sweetalert_cancel_title_value: "Se ha cancelado el evento #{titulo_permiso_documento.upcase} #{@permiso_documento.id}" } do %>
+                        <span class="icon text-50">
+                          <i class="fas fa-edit"></i>
+                        </span>
+                  <span class="text"><%= titulo_permiso_documento.upcase %></span>
+                <% end %>
+                <% end %>
+                <%= link_to permiso_documentos_path, class: "btn btn-outline-danger btn-sm" do %>
+                    <span class="icon text-red-50">
+                      <i class="fas fa-arrow-circle-left"></i>
+                    </span>
+                  <span class="text">CANCELAR</span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

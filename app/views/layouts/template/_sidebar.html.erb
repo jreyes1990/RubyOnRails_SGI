@@ -1,0 +1,357 @@
+<% 
+if session[:permisosSidebar].nil?
+  cargar_permisos_de_menus_sidebar(current_user.id, helper_current_user_empresa_id) 
+end
+%>
+
+<% 
+menu_elements = [
+  { 
+    name: 'MENU USUARIOS', 
+    text: 'Usuarios', 
+    link: usuarios_index_path, 
+    class: 'fas fa-users', 
+    action: 'usuarios'
+  },
+  { 
+    name: 'MENU EMPRESAS', 
+    text: 'Empresas', 
+    link: empresas_path, 
+    class: 'fas fa-building', 
+    action: 'empresas'
+  },
+  { 
+    name: 'MENU AREAS EMPRESA', 
+    text: 'Areas - Empresa', 
+    link: areas_path, 
+    class: 'fas fa-sitemap', 
+    action: 'areas'
+  },
+  {
+    name: 'MENU USUARIO AREA',
+    text: 'Usuario - Area',
+    link: personas_areas_path,
+    class: 'fas fa-users',
+    action: 'personas_areas'
+  },
+    {
+    name: 'MENU ROL',
+    text: 'Rol',
+    link: roles_path,
+    class: 'fas fa-user-tag',
+    action: 'roles'
+  },
+    {
+    name: 'MENU MENU',
+    text: 'Menú',
+    link: menus_path,
+    class: 'fab fa-elementor',
+    action: 'menus'
+  },
+  {
+    name: 'MENU OPCION MENU',
+    text: 'Opción - Menú',
+    link: opciones_path,
+    class: 'fas fa-minus-square',
+    action: 'opciones'
+  },
+  {
+    name: 'MENU MENU ROL',
+    text: 'Menú - Rol',
+    link: menu_roles_path,
+    class: 'fas fa-user-cog',
+    action: 'menu_roles'
+  },
+  {
+    name: 'MENU ATRIBUTO',
+    text: 'Atributo',
+    link: atributos_path,
+    class: 'fas fa-atom',
+    action: 'atributos'
+  },
+  {
+    name: 'MENU COMPONENTE',
+    text: 'Componente',
+    link: componentes_path,
+    class: 'fab fa-codepen',
+    action: 'componentes'
+  },
+  {
+    name: 'MENU PERMISOS FORMULARIO',
+    text: 'Permisos Formularios',
+    link: opcion_cas_path,
+    class: 'fas fa-clipboard-list',
+    action: 'opcion_cas'
+  },
+  {
+    name: 'MENU PERMISOS USUARIO',
+    text: 'Permisos de Usuario',
+    link: permisos_path,
+    class: 'fas fa-key',
+    action: 'persona_empresa_formularios'
+  }
+  
+].freeze
+
+menu_catalogos = [
+  { 
+    name: 'MENU TIPO USUARIO', 
+    text: 'Clasifica Documento', 
+    link: tipo_usuarios_path, 
+    class: 'fas fa-users', 
+    action: 'tipo_usuarios'
+  },
+  { 
+    name: 'MENU TIPO PROCESO', 
+    text: 'Tipo Proceso', 
+    link: tipo_procesos_path, 
+    class: 'fas fa-atom', 
+    action: 'tipo_procesos'
+  },
+  { 
+    name: 'MENU TIPO SISTEMA', 
+    text: 'Sistema', 
+    link: tipo_sistemas_path, 
+    class: 'fas fa-sitemap', 
+    action: 'tipo_sistemas'
+  },
+  { 
+    name: 'MENU TIPO DOCUMENTO', 
+    text: 'Tipo Documento', 
+    link: tipo_documentos_path, 
+    class: 'fas fa-book', 
+    action: 'tipo_documentos'
+  },
+  { 
+    name: 'MENU ETAPA SOLICITUD', 
+    text: 'Etapa Solicitud', 
+    link: etapa_solicitudes_path, 
+    class: 'fas fa-terminal', 
+    action: 'etapa_solicitudes'
+  },
+  { 
+    name: 'MENU ETAPA DOCUMENTO', 
+    text: 'Etapa Documento', 
+    link: etapa_documentos_path, 
+    class: 'fas fa-swatchbook', 
+    action: 'etapa_documentos'
+  },
+  { 
+    name: 'MENU ESTADO DOCUMENTO', 
+    text: 'Estado Documento', 
+    link: estado_documentos_path, 
+    class: 'fas fa-tasks', 
+    action: 'estado_documentos'
+  },
+  { 
+    name: 'MENU MACRO PROCESO', 
+    text: 'Macro Proceso', 
+    link: macro_procesos_path, 
+    class: 'fas fa-project-diagram', 
+    action: 'macro_procesos'
+  },
+  { 
+    name: 'MENU PROCESO', 
+    text: 'Proceso', 
+    link: procesos_path, 
+    class: 'fas fa-project-diagram', 
+    action: 'procesos'
+  },
+  { 
+    name: 'MENU ACTIVIDAD', 
+    text: 'Actividad Proceso', 
+    link: actividades_path, 
+    class: 'fas fa-chart-line', 
+    action: 'actividades'
+  }
+].freeze
+
+menu_permiso_catalogos = [
+  { 
+    name: 'MENU PERMISO DOCUMENTO', 
+    text: 'Permiso Documento', 
+    link: permiso_documentos_path, 
+    class: 'fas fa-key', 
+    action: 'permiso_documentos'
+  },
+  { 
+    name: 'MENU PERMISO DOCUMENTO USUARIO', 
+    text: 'Permiso Usuario', 
+    link: permiso_documento_usuarios_path, 
+    class: 'fas fa-user-lock', 
+    action: 'permiso_documento_usuarios'
+  }
+].freeze
+%>
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+  <!-- Sidebar - Brand -->
+    <br>
+  <div class="sidebar-brand d-flex align-items-center justify-content-center">
+    <div class="sidebar-brand-icon rotate-n-90">
+      <img class="img-profile rounded-circle" style="border: 2px solid white;" width="50" height="50" src="<%= current_user.persona.foto.url %>">
+      <br>
+      <div class="sidebar-brand-text mx-3" style="font-size: xx-small;"><%= current_user.email %></div>
+    </div>
+  </div>
+  <!-- Sidebar - Brand -->
+    <br>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <!-- Nav Item - Dashboard -->
+  <li class="<%= is_home_active() %>">
+    <%=link_to root_path, class: "nav-link" do %>
+    <i class="fas fa-home"></i>
+    <span> INICIO </span>
+    <%end%>
+  </li>
+
+  <!-- INICIA CONFIGURACION DEL MENU DE LOS SISTEMAS, PARA MOSTRAR EN EL SIDEBAR -->
+  <% if menu_elements.any? { |element| tiene_permiso_sidebar(element[:name], "VER OPCION") } %>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      SETTINGS
+    </div>
+
+    <!-- INICIA CONFIGURACION DE MENU DE LOS SISTEMAS -->
+    <li class="<%= is_active_controller_configuracion_titulo() %>">
+      <a class="menu_sb <%= is_active_controller_configuracion() %>" href="#" data-toggle="collapse"
+        data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+        <i class="fas fa-fw fa-wrench"></i>
+        <span>SISTEMAS</span>
+      </a>
+      <div id="collapseUtilities" class="opcion_sb <%= is_active_option_controller_configuracion() %>"
+        aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div class="bg-green-sutil py-2 collapse-inner rounded">
+
+          <h6 class="collapse-header">Opciones:</h6>
+          <!-- INICIA VALIDACION DE LOS MENUS DEL SISTEMA -->
+          <% menu_elements.each do |element| %>
+            <% if tiene_permiso_sidebar(element[:name], "VER OPCION") %>
+              <%= link_to element[:link], class: is_active_action(element[:action]) do %>
+                <i class="<%= element[:class] %>"></i>
+                <span><%= element[:text] %></span>
+              <% end %>
+            <% end %>
+          <% end %>
+          <!-- FINALIZA VALIDACION DE LOS MENUS DEL SISTEMA -->
+        </div>
+      </div>
+    </li>
+    <!-- INICIA CONFIGURACION DE MENU DE LOS SISTEMAS -->
+<% end %>
+<!-- FIN CONFIGURACION DEL MENU DE LOS SISTEMAS, PARA MOSTRAR EN EL SIDEBAR -->
+
+<!--INICIA VALIDACION DE LOS CATALOGOS PARA MOSTRAR EN EL SIDEBAR -->
+<% if menu_catalogos.any? { |element| tiene_permiso_sidebar(element[:name], "VER OPCION") } %>
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    MENÚS
+  </div>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="<%= is_active_controller_catalogos_titulo() %>">
+    <a class="menu_sb <%= is_active_controller_catalogos() %>" href="#" data-toggle="collapse" data-target="#collapseCatalogo"
+       aria-expanded="true" aria-controls="collapseCatalogo">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>CATÁLOGOS</span>
+    </a>
+    <div id="collapseCatalogo" class="opcion_sb <%= is_active_option_controller_catalogos() %>" aria-labelledby="headingCatalogo"
+         data-parent="#accordionSidebar">
+      <div class="bg-green-sutil py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Opciones del Menú:</h6>
+        <!-- INICIA VALIDACION DE LOS MENUS DEL CATÁLOGO -->
+        <% menu_catalogos.each do |element| %>
+          <% if tiene_permiso_sidebar(element[:name], "VER OPCION") %>
+            <%= link_to element[:link], class: is_active_action(element[:action]) do %>
+              <i class="<%= element[:class] %>"></i>
+              <span><%= element[:text] %></span>
+            <% end %>
+          <% end %>
+        <% end %>
+        <!-- FINALIZA VALIDACION DE LOS MENUS DEL CATÁLOGO -->
+        <% if tiene_permiso_sidebar("MENU PERMISO DOCUMENTO", "VER OPCION") ||
+              tiene_permiso_sidebar("MENU PERMISO DOCUMENTO USUARIO", "VER OPCION") %>
+          <h6 class="collapse-header">Permiso Documentos:</h6>
+          <!-- INICIA VALIDACION DE LOS MENUS DEL CATÁLOGO -->
+          <% menu_permiso_catalogos.each do |element| %>
+            <% if tiene_permiso_sidebar(element[:name], "VER OPCION") %>
+              <%= link_to element[:link], class: is_active_action(element[:action]) do %>
+                <i class="<%= element[:class] %>"></i>
+                <span><%= element[:text] %></span>
+              <% end %>
+            <% end %>
+          <% end %>
+          <!-- FINALIZA VALIDACION DE LOS MENUS DEL CATÁLOGO -->
+        <% end %>
+      </div>
+    </div>
+  </li>
+<% end %>
+<!--FINALIZA VALIDACION DE LOS CATALOGOS PARA MOSTRAR EN EL SIDEBAR -->
+
+<!--INICIA VALIDACION DE LA DOCUMENTACION PARA MOSTRAR EN EL SIDEBAR -->
+<% if tiene_permiso_sidebar("MENU DOCUMENTO", "VER OPCION")||
+      tiene_permiso_sidebar("MENU BITACORA DOCUMENTOS", "VER OPCION")
+%>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    MENÚS
+  </div>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="<%= is_active_controller_documentos_titulo() %>">
+    <a class="menu_sb <%= is_active_controller_documentos() %>" href="#" data-toggle="collapse" data-target="#collapseDocumento"
+       aria-expanded="true" aria-controls="collapseDocumento">
+      <i class="fas fa-folder"></i>
+      <span>DOCUMENTOS</span>
+    </a>
+    <div id="collapseDocumento" class="opcion_sb <%= is_active_option_controller_documentos() %>" aria-labelledby="headingDocumento"
+         data-parent="#accordionSidebar">
+      <div class="bg-green-sutil py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Opciones Documentación:</h6>
+
+        <!--INICIA VALIDACION DE DOCUMENTACION PARA MOSTRAR EN EL SIDEBAR -->
+        <% if tiene_permiso_sidebar("MENU DOCUMENTO", "VER OPCION") %>
+          <%=link_to documentos_path, class: is_active_action("documentos")  do %>
+            <i class="fas fa-folder"></i>
+            <span>Autorizados</span>
+          <%end%>
+        <% end %>
+
+        <!--< if tiene_permiso_sidebar("MENU BUZON SOLICITUD", "VER OPCION") %>-->
+          <!--<=link_to solicitud_cambios_path, class: is_active_action("solicitud_cambios")  do %>
+            <i class="fas fa-folder"></i>
+            <span>Buzón Solicitudes</span>
+          <end%>
+          -->
+        <!--< end %>-->
+
+      </div>
+    </div>
+  </li>
+<% end %>
+<!--FINALIZA VALIDACION DE LA DOCUMENTACION PARA MOSTRAR EN EL SIDEBAR -->
+
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+
+</ul>
+<!-- End of Sidebar -->

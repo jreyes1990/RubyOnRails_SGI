@@ -1,0 +1,10 @@
+<tr> 
+  <td class="text-center"><%= sistema_info(permiso_documento) %></td>
+  <td class="text-center"><%= proceso_info(permiso_documento) %></td>
+  <td class="text-center"><%= tipo_documento_info(permiso_documento) %></td>
+  <td class="text-center">
+    <%= check_box_tag "permiso_documentos_ids[]", permiso_documento.id, false, checkbox_attributes(permiso_documento) %>
+    <%= estado_icon(permiso_documento) %>
+    <%= documento_info(permiso_documento) %>
+  </td>
+</tr>

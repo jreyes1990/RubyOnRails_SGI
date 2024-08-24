@@ -1,0 +1,28 @@
+# == Schema Information
+#
+# Table name: tipo_equipos
+#
+#  id             :bigint           not null, primary key
+#  nombre         :string
+#  descripcion    :string
+#  estado         :string
+#  user_created_id :integer
+#  user_updated_id :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  area_id        :integer
+#
+
+one:
+  nombre: MyString
+  descripcion: MyString
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1
+
+two:
+  nombre: MyString
+  descripcion: MyString
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1

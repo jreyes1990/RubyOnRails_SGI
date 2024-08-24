@@ -1,0 +1,72 @@
+ 
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <%= simple_form_for :nuevo_articulo, :url => {:controller => "labors", :action => "agregar_articulo"} do |f| %>
+     <div class="modal-header modal-header-success" align="center">
+       <h4 class="modal-title" id="myModalLabel"></h4>
+     </div>
+     <div class="modal-body">
+       <h3 class="m-t-none m-b">Selección de Artículo</h3>
+       <div class="form-inputs">
+         
+        <%= f.input :articulo_id, label:"Hola peter", collection: @articulos, label_method: :nombre_articulo_con_unidad_medida, value_method: :id, label: "Articulos", prompt: "Buscar un articulo", input_html: {class: 'select2-articulos', 'data-endpoint': search_articulo_path, autofocus: true, required: true} %>        
+        <%= f.input :cantidad,  required: true, label: "Cantidad", as: :numeric %>
+         <%=f.hidden_field :labor_id, :value => @labor.id %>
+
+       </div>
+     </div>
+     <div class="modal-footer modal-header-success">
+      <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+        <%= button_tag f.submit, class: "btn btn-success btn-sm" do %>
+            <span class="icon text-50">
+            <i class="fas fa-edit"></i>
+            </span>
+            <span class="text">REGISTRAR</span>                          
+        <%end%>
+      <% end %>
+       <%= link_to mostrar_add_articulos_path(@labor.id), class: "btn btn-outline-danger btn-sm" do %>
+       <span class="icon text-red-50">
+         <i class="fas fa-arrow-circle-left"></i>
+       </span>
+       <span class="text">CERRAR</span>
+       <%end%>
+
+     </div>
+     <% end %>
+   </div>
+ </div>
+ <script>
+
+//BUSCADOR ARTICULOS
+    $('.select2-articulos').select2({
+        ajax: {
+            url: $('.select2-articulos').data('endpoint'),
+            dataType: "json",
+            delay: 500,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    //results: data
+                    results: $.map(data, function (value, index) {
+                        return {
+                            id: value.valor_id,
+                            text: value.valor_text
+                        };
+                    })
+                };
+            }
+        },
+        minimumInputLength: 3,
+        theme: "bootstrap4",
+        language: "es-GT",
+        width: '100%',
+        dropdownParent: $('#modal-content-articulos')
+    });
+
+</script>
+

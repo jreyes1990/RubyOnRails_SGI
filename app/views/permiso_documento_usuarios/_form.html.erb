@@ -1,0 +1,244 @@
+<!-- Inicio Permiso Documento Usuarios -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Gestión de Permiso Documento Usuario</h6>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <p>
+                <button class="btn btn-primary btn-md" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">
+                  <strong>Filtro Permiso Documento(s)</strong>
+                </button>
+              </p>
+                <div class="collapse multi-collapse" id="multiCollapseExample2">
+                  <div class="col-md-12">
+                    <div class="card shadow mb-12" style="background-color: #FDFBF0; padding: 5px; border-radius: 10px">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-12" style="padding: 10px;"></div>
+                          <div class="col-md-3">
+                              <%= label(:tipo_usuario, 'Perfil Usuario') %>
+                              <%= collection_select(:tipo_usuario, :tipo_usuario_id, TipoUsuario.joins("inner join permiso_documentos on(tipo_usuarios.id=permiso_documentos.tipo_usuario_id)").where("permiso_documentos.estado=?",'A').distinct.order("tipo_usuarios.id"), :id, :nombre,  {:prompt => "Seleccione un Tipo de Usuario"}, {:class => "select2", :required => false, id: 'tipo_usuario_id', 'data-endpoint': search_usuarios_perm_doctos_path, label: 'Probando el nombre'}) %>
+                          </div>
+                          <div class="col-md-3">
+                              <%= label(:tipo_sistema, 'Sistema(s)') %>
+                              <%= collection_select(:tipo_sistema, :tipo_sistema_id, TipoSistema.joins("inner join permiso_documentos on(tipo_sistemas.id=permiso_documentos.tipo_sistema_id)").where("permiso_documentos.estado=?",'A').distinct.order("tipo_sistemas.id").limit(0), :id, :nombre,  {:prompt => "Seleccione un Sistema"}, {:class => "select2-multiple select2-sistema-permiso", :required => false, id: 'codigo_sistema', 'data-endpoint': search_sistema_perm_doctos_path, multiple: true, include_blank: false}) %>
+                          </div>
+                          <div class="col-md-3">
+                              <%= label(:tipo_sistema, 'Proceso(s)') %>
+                              <%= collection_select(:proceso, :proceso_id, Proceso.joins("inner join permiso_documentos on(procesos.id=permiso_documentos.proceso_id)").where("permiso_documentos.estado=?",'A').distinct.order("procesos.id").limit(0), :id, :nombre,  {:prompt => "Seleccione un Proceso"}, {:class => "select2-multiple select2-sistema-proceso", :required => false, id: 'codigo_proceso', 'data-endpoint': search_proceso_perm_doctos_path, multiple: true, include_blank: false}) %>
+                          </div>
+                          <div class="col-md-3">
+                              <%= label(:tipo_documento, 'Tipo Documento(s)') %>
+                              <%= collection_select(:tipo_documento, :tipo_documento_id, TipoDocumento.joins("inner join permiso_documentos on(tipo_documentos.id=permiso_documentos.tipo_documento_id)").where("permiso_documentos.estado=?",'A').distinct.order("tipo_documentos.id").limit(0), :id, :nombre,  {:prompt => "Seleccione un Tipo Documento"}, {:class => "select2-multiple select2-tipo-documento", :required => false, id: 'codigo_tipo_documento', 'data-endpoint': search_tipo_documento_perm_doctos_path, multiple: true, include_blank: false}) %>
+                          </div>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                </div>
+            </div>
+          </div>
+          </div>
+          <div class="container-fluid">
+          <%= simple_form_for(@permiso_documento_usuario) do |f| %>
+              <%= f.error_notification %>
+              <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+              <div class="form-inputs">
+                  <%= f.association :user, collection: Persona.where("estado=?", 'A').order('id ASC'), value_method: :user_id, label_method: :nombre_completo_con_email,  label: "Usuario", include_blank: "Seleccione un Usuario", input_html: { class: "select2-multiple select2-usuario-permiso", id: 'user_id', required: true, multiple: true, include_blank: false }, include_hidden: false %>
+                  <%= f.association :permiso_documento, collection: PermisoDocumento.where("estado=?", 'A').order('tipo_usuario_id ASC'), value_method: :id, label_method: :desc_permiso_docto,  label: "Permiso Documento", include_blank: "Seleccione un Permiso", input_html: { class: "select2-multiple select2-documento", id: 'permiso_documento_id', required: true, multiple: true, include_blank: false }, include_hidden: false %>
+              </div>
+              <br/>
+
+              <div class="row">
+                  <div class="col-md-12 text-center">
+                      <% if tiene_permiso("BOTON REGISTRAR", "VER") %>
+                          <%= button_tag f.submit, class: "btn btn-success btn-sm", 
+                          data: { controller: 'sweetalert', action: 'click->sweetalert#btnProcesar',
+                            sweetalert_confirm_alert_value: "Activar ó Inactivar",
+                            sweetalert_cancel_alert_value: "Cancelado",
+                            sweetalert_proceso_title_value: "<h3><strong style='color: green;'>Procesando Datos</strong></h3>".html_safe,
+                            sweetalert_confirm_title_value: '<strong style="color: #1d71b9;">Esta seguro de aplicar los cambios?</strong>',
+                            sweetalert_confirm_btn_value: '<i class="fas fa-check-circle"></i><strong> Si, ' + "#{titulo_permiso_docto_usuario}" + '</strong>',
+                            sweetalert_confirm_proccess_value: "Aplicando.....",
+                            sweetalert_cancel_btn_value: '<i class="fas fa-times-circle"></i><strong> No, Cancelar</strong>',
+                            sweetalert_cancel_title_value: "Se ha cancelado el evento #{titulo_permiso_docto_usuario.upcase} #{@permiso_documento_usuario.id}"} do %>
+                              <span class="icon text-50">
+                                  <i class="fas fa-edit"></i>
+                              </span>
+                              <span class="text"><%= titulo_permiso_docto_usuario.upcase %></span>
+                          <% end %>
+                      <% end %>
+                      <%= link_to permiso_documento_usuarios_path, class: "btn btn-outline-danger btn-sm" do %>
+                          <span class="icon text-red-50">
+                              <i class="fas fa-arrow-circle-left"></i>
+                          </span>
+                          <span class="text">CANCELAR</span>
+                      <% end %>
+                  </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sistemas" data-endpoint="<%= search_usuario_sistema_path %>"></div>
+<div class="procesos" data-endpoint="<%= search_sistema_proceso_path %>"></div>
+<div class="tipo_documentos" data-endpoint="<%= search_proceso_tipo_documento_path %>"></div>
+<script>
+    $('#tipo_usuario_id').on('select2:select', function (e) {
+        $.ajax({
+            url: $('#tipo_usuario_id').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                usuario_id_param: e.params.data.id
+            },
+            success: function (data) {
+                $("#permiso_documento_id").empty();
+                $("#codigo_proceso").empty();
+                $("#codigo_tipo_documento").empty();
+
+                var json = data;
+                $("#permiso_documento_id").append("<option value='" + 0 + "'>Seleccione un permiso</option>");
+                for (var i of json) {
+                    $("#permiso_documento_id").append("<option selected='selected' value='" + i.permiso_id + "'>" + i.descripcion + "</option>");
+                }
+            }
+        });
+    });
+
+    $('#tipo_usuario_id').on('select2:select', function (e) {
+        $.ajax({
+            url: $('.sistemas').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                usuario_id_param: e.params.data.id
+            },
+            success: function (data) {
+                $("#codigo_sistema").empty();
+
+                var json = data;
+                $("#codigo_sistema").append("<option value='" + 0 + "'>Seleccione un sistema</option>");
+                for (var i of json) {
+                    $("#codigo_sistema").append("<option value='" + i.permiso_id + "'>" + i.descripcion + "</option>");
+                }
+            }
+        });
+    });
+
+    $('#codigo_sistema').change('select2:select', function (e) {
+        $("#permiso_documento_id").empty();
+        $.ajax({
+            url: $('#codigo_sistema').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                sistema_id_param: $(this).val()
+            },
+            success: function (data) {
+                $("#permiso_documento_id").empty();
+
+                var json = data;
+                $("#permiso_documento_id").append("<option value='" + 0 + "'>Seleccione un permiso</option>");
+                for (var i of json) {
+                    $("#permiso_documento_id").append("<option selected='selected' value='" + i.permiso_id + "'>" + i.descripcion + "</option>");
+                }
+            }
+        });
+    });
+
+    $('#codigo_sistema').change('select2:select', function (e) {
+        $("#codigo_proceso").empty();
+        $.ajax({
+            url: $('.procesos').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                sistema_id_param: $(this).val()
+            },
+            success: function (data) {
+                $("#codigo_proceso").empty();
+
+                var json = data;
+                $("#codigo_proceso").append("<option value='" + 0 + "'>Seleccione un proceso</option>");
+                for (var i of json) {
+                    $("#codigo_proceso").append("<option value='" + i.codigo_proceso + "'>" + i.nombre_proceso + "</option>");
+                }
+            }
+        });
+    });
+
+    $('#codigo_proceso').change('select2:select', function (e) {
+        $("#permiso_documento_id").empty();
+        $.ajax({
+            url: $('#codigo_proceso').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                proceso_id_param: $(this).val()
+            },
+            success: function (data) {
+                $("#permiso_documento_id").empty();
+
+                var json = data;
+                $("#permiso_documento_id").append("<option value='" + 0 + "'>Seleccione un permiso</option>");
+                for (var i of json) {
+                    $("#permiso_documento_id").append("<option selected='selected' value='" + i.permiso_id + "'>" + i.descripcion + "</option>");
+                }
+            }
+        });
+    });
+
+    $('#codigo_proceso').change('select2:select', function (e) {
+        $("#codigo_tipo_documento").empty();
+        $.ajax({
+            url: $('.tipo_documentos').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                proceso_id_param: $(this).val()
+            },
+            success: function (data) {
+                $("#codigo_tipo_documento").empty();
+
+                var json = data;
+                $("#codigo_tipo_documento").append("<option value='" + 0 + "'>Seleccione un tipo documento</option>");
+                for (var i of json) {
+                    $("#codigo_tipo_documento").append("<option value='" + i.codigo_tipo_documento + "'>" + i.nombre_tipo_documento + "</option>");
+                }
+            }
+        });
+    });
+
+    $('#codigo_tipo_documento').change('select2:select', function (e) {
+        $("#permiso_documento_id").empty();
+        $.ajax({
+            url: $('#codigo_tipo_documento').data('endpoint'),
+            type: 'GET',
+            dataType: "json",
+            data: {
+                tipo_docto_id_param: $(this).val()
+            },
+            success: function (data) {
+                $("#permiso_documento_id").empty();
+
+                var json = data;
+                $("#permiso_documento_id").append("<option value='" + 0 + "'>Seleccione un permiso</option>");
+                for (var i of json) {
+                    $("#permiso_documento_id").append("<option selected='selected' value='" + i.permiso_id + "'>" + i.descripcion + "</option>");
+                }
+            }
+        });
+    });
+</script>

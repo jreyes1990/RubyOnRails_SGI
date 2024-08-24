@@ -1,0 +1,348 @@
+<style>
+    body {
+        margin-top: 0px;
+        color: #1a202c;
+        text-align: left;
+        background-color: #e2e8f0;
+    }
+
+    .card-2 {
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+    }
+
+    .card-2 {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+    }
+
+    .card-body-2 {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+    }
+
+    .gutters-sm > .col,
+    .gutters-sm > [class*=col-] {
+        padding-right: 8px;
+        padding-left: 8px;
+    } 
+
+    /******************************************************************/
+    /* CSS CONFIGURACIÓN DE LA TABLA */
+    .table-bordered td, .table-bordered th {
+      border: 1px solid #ffffff;
+    }
+
+    /******************************************************************/
+    /* CSS PARA AGRUPACION DE COLUMNAS */
+    .group-start-level-0 {
+      background-color: white !important;
+      padding-left: 20px !important;
+      text-transform: uppercase !important;
+      font-weight: bold !important;
+      color: #27A243 !important;
+    }
+
+    .group-start-level-1 td {
+      /*background-color: #616787 !important;*/
+      background-color: white !important;
+      padding-left: 40px !important;
+      text-transform: uppercase !important;
+      font-weight: bold !important;
+      color: #556093 !important;
+    }
+
+    .group-start-level-2 td {
+      background-color: white !important;
+      padding-left: 70px !important;
+      text-transform: uppercase !important;
+      font-weight: bold !important;
+      color: #FFA500 !important;
+    } 
+
+    .group-start-level-3 td {
+      background-color: white !important;
+      padding-left: 90px !important;
+      text-transform: uppercase !important;
+      font-weight: bold !important;
+      color: #858796 !important;
+    } 
+</style>
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Gestión de Clasificación Permiso documentos </h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12 text-right">
+
+        <%= simple_form_for :descarga_permiso_documentos, :url => {:controller => "permiso_documentos", :action => "download_excel_formats"} do |f| %>
+          <% if tiene_permiso("BOTON NUEVO REGISTRO", "VER") %>
+            <%= link_to new_permiso_documento_path, class: "btn btn-success btn-sm" do %>
+              <span class="icon text-50">
+                <i class="fas fa-plus-circle"></i>
+              </span>
+              <span class="text">AGREGAR</span>
+            <% end %>
+          <% end %>
+
+          <%= button_tag f.submit, class: "btn btn-primary btn-sm", data: {controller: 'sweetalert', action: 'click->sweetalert#btnAlerta',
+                                                                            sweetalert_confirm_alert_value: "Descarga Formato",                                                                                                                        
+                                                                            sweetalert_confirm_title_value: "Está seguro de realizar la descargar de "+'<strong>permiso documentos</strong>',
+                                                                            sweetalert_confirm_btn_value: "Si, Descargar",
+                                                                            sweetalert_cancel_btn_value: "No, Cancelar"  }  do %>
+            
+            <span class="icon text-50">
+              <i class="fa fa-download"></i>
+            </span>
+            <span class="text">PERMISO DOCUMENTOS</span>
+          <%end%>
+
+          <%= link_to root_path, class: "btn btn-outline-danger btn-sm" do %>
+            <span class="icon text-red-50">
+              <i class="fas fa-home"></i>
+            </span>
+            <span class="text">INICIO</span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <% @permiso_documento_encabezado.each_with_index do |op, index| %>
+        <div class="accordion" id="accordionExample"></div>
+          <div class="col-md-12" style="padding:15px">
+            <div class="card border-bottom-success">
+              <div class="text-center">
+                <div class="card-header text-titulo_permisos" id="headingOne">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-center" type="button" data-toggle="collapse" data-target="#<%= (op.tipo_usuario.nombre.upcase.gsub " ", "_").gsub "@", "_" %>" aria-expanded="true" aria-controls="<%= (op.tipo_usuario.nombre.upcase.gsub " ", "_").gsub "@", "_" %>">
+                      <span style="margin-right:10px"><i class="fas fa-user"></i> <%= op.tipo_usuario.nombre.upcase %></span>
+                    </button>
+                  </h2>
+                </div>
+              </div>
+            <%= form_tag inactivar_documentos_permisos_path, method: :put, id: 'inactivar-form' do %>
+              <%= hidden_field_tag :accion, '', id: 'accion-field' %>
+              <div id="<%= (op.tipo_usuario.nombre.upcase.gsub " ", "_").gsub "@", "_" %>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12 text-left">
+                      <%= button_tag "", class: "btn btn-primary btn-sm", type: "submit", name: "aplicar_permiso_selected",
+                                    data: { controller: 'sweetalert', action: 'click->sweetalert#btnProcesar',
+                                    sweetalert_confirm_alert_value: "Activar ó Inactivar",
+                                    sweetalert_cancel_alert_value: "Cancelado",
+                                    sweetalert_proceso_title_value: "<h3><strong style='color: green;'>Aplicando Acción</strong></h3>".html_safe,
+                                    sweetalert_confirm_title_value: 'Esta seguro de aplicar la acción a los documentos seleccionados',
+                                    sweetalert_confirm_btn_value: '<i class="fas fa-check-circle"></i><strong> Si, Aplicar</strong>',
+                                    sweetalert_confirm_proccess_value: "Aplicando.....",
+                                    sweetalert_cancel_btn_value: '<i class="fas fa-times-circle"></i><strong> No, Cancelar</strong>'},
+                                    disabled: false do %>
+                        <span class="text">APLICAR ACCIÓN</span>
+                        <span class="icon text-50">
+                          <i class="fas fa-check-circle" ></i>
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                  <br>
+                  
+                  <div class="row">
+                    <div class="col-md-12 table-responsive-sm">
+                      <table id="datatable_permiso_documento_<%= index %>" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%; border-color: transparent;" data-source="<%= permiso_documentos_path(format: :json, clasifica_documento_id: op.tipo_usuario_id) %>">
+                        <thead class="thead-light">
+                          <tr>
+                            <th class="text-center"> SISTEMA </th>
+                            <th class="text-center"> PROCESO </th>
+                            <th class="text-center"> TIPO DOCUMENTO </th>
+                            <!-- <th class="text-left"> DOCUMENTO </th> -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- <= render_permiso_documentos(@permiso_documentos, op) %> -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var espanol = {
+    lengthMenu: "Mostrar _MENU_ Entradas",
+    zeroRecords: "No hay ningun dato creado para mostrar",
+    info: "Mostrando de _START_ a _END_ datos de _TOTAL_ creados",
+    infoEmpty: "No hay registros disponibles",
+    infoFiltered: "(resultados filtrados de _MAX_ en total)",
+    search: "",
+    processing: "Procesando ......",
+    paginate: 
+      {
+        first: "Inicio",
+        previous: "Anterior",
+        next: "Siguiente",
+        last: "Ultimo"
+      }
+  };
+
+  var var_dom = "<'row'<'col-sm-3'l><'col-sm-3'><'col-sm-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-3 text-center'p>>";
+
+  // Definir la función para inicializar los popovers
+  function initializePopovers() {
+    $('[title]').attr("data-rel", "tooltip").attr("data-placement", "top");
+    var showPopover = function() {
+      $(this).popover('show');
+    };
+    var hidePopover = function() {
+      $(this).popover('hide');
+    };
+    $("[data-rel='tooltip']").popover({
+      trigger: 'manual'
+    }).click(showPopover).hover(showPopover, hidePopover);
+  }
+
+  //configuracion para datatables agrupados por columnas dinamico
+  /**
+  * Función para agrupar filas en un DataTable en base a múltiples columnas.
+  * @param {string} var_dom - Selector o elemento DOM donde se mostrará el DataTable. Por ejemplo, '#datatable_familia_producto' o document.getElementById('datatable_familia_producto').
+  * @param {Array} agrupaciones - Un array que contiene objetos con detalles de las columnas que se utilizarán para la agrupación. Cada objeto debe tener la forma { columnIndex: number, label: string }, donde columnIndex es el índice de la columna (comenzando desde 0) y label es el nombre o etiqueta de la columna que se utilizará para mostrar el nombre del grupo.
+  * @param {Array|null} columnDefs - Un array opcional que contiene configuraciones adicionales para las columnas del DataTable, en el formato requerido por DataTables columnDefs. Puede ser nulo si no se necesita ninguna configuración adicional.
+  * @param {Object} options - Opciones adicionales para configurar el DataTable, siguiendo el formato de configuración del DataTable. Puedes personalizar opciones como el orden, dom, lenguaje, botones, etc.
+  * @param {Array} columns - La configuración de columnas para el DataTable.
+  * @param {Object} ajaxConfig - Configuración Ajax para el DataTable.
+  */
+  function agrupar_filas(var_dom, agrupaciones, columnDefs, options, columns, ajaxConfig) {    
+    // Comprueba si agrupaciones está vacío
+    if (!agrupaciones || agrupaciones.length === 0) {
+      // Aquí puedes inicializar la tabla sin el rowGroup, si lo deseas
+      $(var_dom).DataTable({
+        "columnDefs": columnDefs || [],
+        fixedHeader: options.fixedHeader,
+        stateSave: options.stateSave,
+        stateDuration: options.stateDuration,
+        dom: options.dom,
+        language: options.language,
+        responsive: options.responsive,
+        //lengthChange: options.lengthChange,
+        lengthMenu: options.lengthMenu,
+        select: options.select,
+        buttons: options.buttons,
+        pagingType: options.pagingType,
+        columns: columns,
+        ajax: ajaxConfig,
+        processing: options.processing,
+        serverSide: options.serverSide
+      });
+
+      return;
+    }
+
+    var dataSrc = agrupaciones.map(agrupacion => agrupacion.columnIndex);
+    var orden = agrupaciones.length > 1 ? 
+                agrupaciones.map(agrupacion => [agrupacion.indexOrden, agrupacion.order || 'asc']) :
+                [];
+
+    $(var_dom).DataTable({
+        "order": orden,
+        "columnDefs": [...agrupaciones.map(agrupacion => ({ "visible": false, "targets": agrupacion.indexOrden })), ...(columnDefs ?? [])],
+        rowGroup: {
+          dataSrc: dataSrc,
+          startRender: function (rows, group, level) {
+            var className = '';
+            var groupName = '';
+
+            agrupaciones.forEach((agrupacion, index) => {
+              if (level === index) {
+                className = `group-start-level-${index}`;
+                groupName = `${agrupacion.label} ${group}`;
+              }
+            });
+
+            return $('<tr/>')
+              .append(`<td colspan="20" style='background-color: transparent;>' ${groupName}</td>`)
+              .addClass(className);
+          }
+        },
+        initComplete: function () {
+          initializePopovers(); // Inicializar popovers después de que la tabla esté lista
+        },
+        fixedHeader: options.fixedHeader,
+        stateSave: options.stateSave,
+        stateDuration: options.stateDuration,
+        dom: options.dom,
+        language: options.language,
+        responsive: options.responsive,
+        //lengthChange: options.lengthChange,
+        lengthMenu: options.lengthMenu,
+        select: options.select,
+        buttons: options.buttons,
+        pagingType: options.pagingType,
+        columns: columns,
+        ajax: ajaxConfig,
+        processing: options.processing,
+        serverSide: options.serverSide
+    });
+  }
+
+  //opciones que se pueden utilizar en el datatable - estas son estandar
+  var opciones = {
+    fixedHeader: true,
+    stateSave: true,
+    stateDuration: 1200,
+    dom: var_dom,
+    language: espanol,
+    responsive: "true",
+    lengthMenu: 
+    [
+      [15, 5, 10, 20, 25, 50, 100, -1],
+      [15, 5, 10, 20, 25, 50, 100, 'Todos'],
+    ],
+    select: true,
+    //buttons: btnDescarga,
+    pagingType: "simple_numbers",
+    processing: true,
+    serverSide: true
+  };
+
+  <% @permiso_documento_encabezado.each_with_index do |op, index| %>
+    agrupar_filas(
+      '#datatable_permiso_documento_<%= index %>',
+      [
+        { columnIndex: "sistema", label: '', indexOrden: 0 },
+        { columnIndex: "proceso", label: '', indexOrden: 1 },
+        { columnIndex: "tipo_documento", label: '', indexOrden: 2 },
+        { columnIndex: "documento", label: '', indexOrden: 3 }
+      ],
+      [],
+      opciones,
+      [
+        { data: "sistema" },
+        { data: "proceso" },
+        { data: "tipo_documento" },
+        { data: "documento" }
+      ],
+      {
+        url: $('#datatable_permiso_documento_<%= index %>').data('source')
+      }
+    );
+  <% end %>
+});
+</script>

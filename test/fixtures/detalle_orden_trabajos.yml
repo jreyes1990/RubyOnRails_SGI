@@ -1,0 +1,66 @@
+# == Schema Information
+#
+# Table name: detalle_orden_trabajos
+#
+#  id                        :bigint           not null, primary key
+#  orden_trabajo_id          :bigint           not null
+#  nombre_empleado           :string
+#  codigo_empleado           :string
+#  equipo_id                 :bigint           not null
+#  mantenimiento_id          :integer
+#  labor_id                  :integer
+#  nombre_labor              :string
+#  descripcion_labor         :string
+#  tiempo_labor              :string
+#  numero_persona_labor      :integer
+#  articulo_id               :integer
+#  nombre_articulo           :string
+#  cantidad_articulo         :integer
+#  estado                    :string
+#  user_created_id            :integer
+#  user_updated_id            :integer
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  unidad_medida_articulo    :string
+#  nombre_tipo_mantenimiento :string
+#  proveedor_id              :integer
+#  nombre_proveedor          :string
+#  observacion_falla         :string
+#  observacion_envio         :string
+#
+
+one:
+  orden_trabajo: one
+  nombre_empleado: MyString
+  codigo_empleado: MyString
+  equipo: one
+  mantenimiento_id: one
+  labor_id: 1
+  nombre_labor: MyString
+  descripcion_labor: MyString
+  tiempo_labor: MyString
+  numero_persona_labor: 1
+  articulo_id: 1
+  nombre_articulo: MyString
+  cantidad_articulo: 1
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1
+
+two:
+  orden_trabajo: two
+  nombre_empleado: MyString
+  codigo_empleado: MyString
+  equipo: two
+  mantenimiento: two
+  labor_id: 1
+  nombre_labor: MyString
+  descripcion_labor: MyString
+  tiempo_labor: MyString
+  numero_persona_labor: 1
+  articulo_id: 1
+  nombre_articulo: MyString
+  cantidad_articulo: 1
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1

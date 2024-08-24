@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: detalle_equipos
+#
+#  id                    :bigint           not null, primary key
+#  equipo_id             :bigint           not null
+#  caracteristica_id     :integer
+#  nombre_caracteristica :string
+#  valor_caracteristica  :string
+#  estado                :string
+#  user_created_id        :integer
+#  user_updated_id        :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+
+one:
+  equipo: one
+  caracteristica_id: 1
+  nombre_caracteristica: MyString
+  valor_caracteristica: MyString
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1
+
+two:
+  equipo: two
+  caracteristica_id: 1
+  nombre_caracteristica: MyString
+  valor_caracteristica: MyString
+  estado: MyString
+  user_created_id: 1
+  user_updated_id: 1

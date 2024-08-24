@@ -1,0 +1,53 @@
+<!-- Inicio caracteristica por equipos -->
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Nueva Labor</h6>
+    </div>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card-body">
+                  <%= render 'wizardnav' %>
+                    <div class="col-md-12">
+                        <%= simple_form_for :labor, :url => {:controller => "labors", :action => "crear_labor"}, defaults: { wrapper: :inline_field3 } do |f| %>
+                        
+                        <div class="row" style="background-color: #E4E8ED; padding: 20px;">
+                            <%= f.input :nombre,  required: true, label: "Nombre", wrapper: :inline_field6 %>
+                            <%= f.input :numero_personas, as: :integer,  required: true, label: "Personas" %>
+                            <%= f.input :tiempo, as: :time, html5: true, required: true, label: "Tiempo (HH:MM)" %>
+                        </div>
+
+                        <div class="row" style="background-color: #E4E8ED; padding: 20px;">
+                            <%= f.input :descripcion,  required: true, label: "Descripción", wrapper: :inline_field12, as: :text, :input_html => {:rows => 3} %>
+                        </div>
+                        <div class="row" style="background-color: #E4E8ED; padding: 20px;">
+
+                            <div class="col-md-12 text-right">
+                                <%= link_to labors_path, class: "btn btn-outline-danger btn-sm" do %>
+                                <span class="icon text-red-50">
+                                    <i class="fas fa-arrow-circle-left"></i>
+                                </span>
+                                <span class="text">CANCELAR</span>
+                                <%end%>
+
+                                <% if tiene_permiso("BOTON REGISTRAR", "VER") %>
+                                <%= button_tag f.submit, class: "btn btn-success btn-sm", :id=>"open-tabla" do %>
+                                <span class="text">SIGUIENTE</span>
+                                <span class="icon text-50">
+                                    <i class="fas fa-arrow-right"></i>
+                                </span>
+
+                                <%end%>
+                                <% end %>
+                            </div>
+                        </div>
+                        <% end %>
+                    </div>
+                    <br>
+                     <%= render 'wizardclose' %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

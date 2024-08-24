@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @labor.nombre %>
+</p>
+
+<p>
+  <strong>Tiempo:</strong>
+  <%= @labor.tiempo %>
+</p>
+
+<p>
+  <strong>Numero personas:</strong>
+  <%= @labor.numero_personas %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @labor.descripcion %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @labor.estado %>
+</p>
+
+<p>
+  <strong>Area:</strong>
+  <%= @labor.area_id %>
+</p>
+
+<p>
+  <strong>User create:</strong>
+  <%= @labor.user_created_id %>
+</p>
+
+<p>
+  <strong>User update:</strong>
+  <%= @labor.user_updated_id %>
+</p>
+
+<%= link_to 'Edit', edit_lobor_path(@labor) %> |
+<%= link_to 'Back', labors_path %>

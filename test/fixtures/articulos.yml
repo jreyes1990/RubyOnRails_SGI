@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: articulos
+#
+#  id             :bigint           not null, primary key
+#  nombre         :string
+#  unidad_medida  :string
+#  descripcion    :string
+#  estado         :string
+#  area_id        :integer
+#  user_created_id :integer
+#  user_updated_id :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+
+one:
+  nombre: MyString
+  unidad_medida: MyString
+  descripcion: MyString
+  estado: MyString
+  area_id: 1
+  user_created_id: 1
+  user_updated_id: 1
+
+two:
+  nombre: MyString
+  unidad_medida: MyString
+  descripcion: MyString
+  estado: MyString
+  area_id: 1
+  user_created_id: 1
+  user_updated_id: 1

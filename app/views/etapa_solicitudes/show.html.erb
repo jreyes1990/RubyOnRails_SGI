@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @etapa_solicitud.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @etapa_solicitud.descripcion %>
+</p>
+
+<p>
+  <strong>Empresa:</strong>
+  <%= @etapa_solicitud.empresa_id %>
+</p>
+
+<p>
+  <strong>User created:</strong>
+  <%= @etapa_solicitud.user_created_id %>
+</p>
+
+<p>
+  <strong>User updated:</strong>
+  <%= @etapa_solicitud.user_updated_id %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @etapa_solicitud.estado %>
+</p>
+
+<%= link_to 'Edit', edit_etapa_solicitud_path(@etapa_solicitud) %> |
+<%= link_to 'Back', etapa_solicitudes_path %>
