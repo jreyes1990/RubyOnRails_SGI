@@ -14,19 +14,21 @@
 class PersonasArea < ApplicationRecord
     belongs_to :area
     belongs_to :persona
+    belongs_to :rol, optional: true
+
     validates :persona_id, :area_id, presence: true
     validates_uniqueness_of :persona_id, :scope => :area_id, :message => " error!! solo puede asignar una vez el área"
 
     def nombre_area
       "#{self.area.empresa.nombre} - #{self.area.nombre} "
-    end 
+    end
 
     def user_id
       self.persona.user_id
-    end 
+    end
 
     def nombre_persona
       "#{self.persona.nombre} #{self.persona.apellido}"
-    end 
-    
+    end
+
 end

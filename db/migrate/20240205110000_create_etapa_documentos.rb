@@ -1,13 +1,9 @@
-class CreateMenus < ActiveRecord::Migration[6.0]
+class CreateEtapaDocumentos < ActiveRecord::Migration[6.0]
   def change
-    create_table :menus, id: false, comment: "Catálogo de Menú" do |t|
+    create_table :etapa_documentos, id: false, comment: "Catálogo Etapa de Documentos" do |t|
       t.integer :id, null: false, comment: "Identificador de la llave primaria"
-      t.string :nombre, limit: 100, null: false, comment: "Nombre del menú"
-      t.string :descripcion, null: true, comment: "Descripción general del menú"
-      t.string :icono, limit: 50, null: false, comment: "Identificador de icono para el menú"
-      t.string :menu_sidebar, null: true, comment: "Identificador del menú a utilizar en el sidebar"
-      t.string :visible_sidebar, limit: 1, null: false, default: "S", comment: "El menú será visible en el sidebar? [S: Si, N: No]"
-      t.integer :posicion, null: true, comment: "Orden del menú a utilizar en el sidebar"
+      t.string :nombre, limit: 150, null: false, comment: "Nombre de la etapa del documento"
+      t.string :descripcion, comment: "Descripción general de la etapa del documento"
       t.integer :user_created_id, null: false, comment: "Identificador de usuario al registrar en la aplicación web"
       t.integer :user_updated_id, null: true, comment: "Identificador de usuario al actualizar en la aplicación web"
       t.string :estado, limit: 10, null: false, default: "A", comment: "Estados: [A]: Activo  [I]: Inactivo"
@@ -18,40 +14,34 @@ class CreateMenus < ActiveRecord::Migration[6.0]
 
     # Crear una secuencia para autoincrementar la columna id
     execute <<-SQL
-      create sequence menus_seq start with 1 increment by 1 minvalue 1 nocache
+      create sequence etapa_documentos_seq start with 1 increment by 1 minvalue 1 nocache
     SQL
 
     # Crear el índice y la restricción de clave primaria con un nombre específico
     execute <<-SQL
-      alter table menus add
-        constraint pk_menu
+      alter table etapa_documentos add
+        constraint pk_etapaDocumento
         primary key (id)
     SQL
 
     # Agregar el índice único con el nombre personalizado
-    add_index :menus, [:nombre], name: "uidx_menu", unique: true
+    add_index :etapa_documentos, [:nombre], name: "uidx_etapaDocumento", unique: true
 
     # Agregar el constraint CHECK sin el punto y coma al final
     execute <<-SQL
-      alter table menus add
-        constraint ck_estado_menu
+      alter table etapa_documentos add
+        constraint ck_estado_etapaDocumento
         check (estado in ('A', 'I'))
-    SQL
-
-    execute <<-SQL
-      alter table menus add
-        constraint ck_tieneSidebar_menu
-        check (visible_sidebar in ('S', 'N'))
     SQL
 
     # Crear un trigger para asignar el valor de la secuencia a la columna id
     execute <<-SQL
-      create or replace trigger trg_menus_seq
-      before insert on menus
+      create or replace trigger trg_etapa_documentos_seq
+      before insert on etapa_documentos
       for each row
         when (new.id is null)
       begin
-        :new.id := menus_seq.nextval;
+        :new.id := etapa_documentos_seq.nextval;
       end;
     SQL
   end

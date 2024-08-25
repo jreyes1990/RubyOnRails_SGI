@@ -20,7 +20,6 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable, :trackable
 
-
   has_one :persona, dependent: :destroy
   after_create :set_persona
   has_many :permiso_documento_usuarios
@@ -29,8 +28,6 @@ class User < ApplicationRecord
     self.persona = Persona.create()
   end
 
-  
-
   def active_for_authentication?
     if self.estado == 'I'
       super && false
@@ -38,6 +35,4 @@ class User < ApplicationRecord
       super && true
     end
   end
-
-
 end

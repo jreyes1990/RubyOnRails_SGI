@@ -1,7 +1,8 @@
 module Utilidades
   require 'libreconv'
-
+  require 'mini_magick'
   public
+
   def current_area_id_parametro
     parametros_area = Parametro.where(:user_id => current_user.id).first
     if (parametros_area != nil) then
@@ -9,7 +10,7 @@ module Utilidades
       return area_id
     else
       return area_id = ''
-    end 
+    end
   end
 
   def genera_bitacora(bitacora, codigo, correlativo, nombre, fecha, version, descrip, estado, user_created_id, user_updated_id,
@@ -99,13 +100,13 @@ module Utilidades
     hora = t.strftime("%H:%M:%S")
 
       if bitacora == "GESTION_TOKEN"
-        bita = BitacoraTokenPersona.new        
+        bita = BitacoraTokenPersona.new
       elsif bitacora == "AUTENTICACION_MOVIL"
         bita = BitacoraAutenticacionMovil.new
-        bita.email = email        
+        bita.email = email
       elsif bitacora = "CONSULTA_MOVIL"
-        bita = BitacoraConsultaMovil.new        
-      end  
+        bita = BitacoraConsultaMovil.new
+      end
 
       bita.persona_id = persona_id
       bita.accion = accion
@@ -113,23 +114,29 @@ module Utilidades
       bita.fecha = fechaHora
       bita.hora = hora
       bita.save
-  end 
+  end
 
   def custom_query(sql)
     results = ActiveRecord::Base.connection.exec_query(sql)
-  
+
     if results.present?
       return results
     else
       return nil
     end
   end
-  
+
+  def anio_actual
+    t = Time.now
+    anio = t.strftime("%Y")
+    return anio
+  end
+
   def fecha_actual
     t = Time.now
     fecha = t.strftime("%d/%m/%Y")
     return fecha
-  end 
+  end
 
   def fecha_actual_ot
     t = Time.now
@@ -139,7 +146,7 @@ module Utilidades
 
   def current_empresa_id_permisos(persona_id)
     @persona = Persona.find(persona_id)
-    id_empresa = 0     
+    id_empresa = 0
     @area = Area.joins("inner join personas_areas on personas_areas.area_id = areas.id
                             inner join personas on personas.id = personas_areas.persona_id
                             inner join empresas on empresas.id = areas.empresa_id
@@ -148,18 +155,24 @@ module Utilidades
     return id_empresa
   end
 
+  def fecha_actual_ot
+    t = Time.now
+    fecha = t.strftime("%Y-%m-%d")
+    return fecha
+  end
+
   #reporteria
   def fecha_hora_actual
     t = Time.now
     fecha = t.strftime("%d/%m/%Y %H:%M:%S")
     return fecha
-  end 
-  
+  end
+
   def ano_actual
     t = Time.now
     fecha = t.strftime("%Y")
     return fecha
-  end 
+  end
 
   def current_user_name_reportes
     persona = Persona.where("user_id = ? ", current_user.id).first
@@ -177,9 +190,9 @@ module Utilidades
   end
 
   def response_api_ordencompra(url, autorizacion, orden_compra, user ,codigo_empresa)
-    
+
     response = RestClient.get url, {Authorization: autorizacion , params: {orden_compra: orden_compra, user: user, codigo_empresa: codigo_empresa}}
-  
+
     if response.present?
       return response
     else
@@ -188,23 +201,21 @@ module Utilidades
   end
 
   def crear_docto_to_preview(file_cargado, documento_master)
+    #GENERACIÓN DE WORD A PDF PARA PREVIEW
+    if file_cargado.content_type == 'application/msword' || file_cargado.content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file_cargado.content_type == 'application/vnd.ms-excel' || file_cargado.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
-      #GENERACIÓN DE WORD A PDF PARA PREVIEW
-        if file_cargado.content_type == 'application/msword' || file_cargado.content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file_cargado.content_type == 'application/vnd.ms-excel' || file_cargado.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          
-          File.open("tmp/#{file_cargado.filename.to_s}", 'wb') do |file|
-              file.write(file_cargado.download)
-          end  
+      File.open("tmp/#{file_cargado.filename.to_s}", 'wb') do |file|
+        file.write(file_cargado.download)
+      end
 
-          Libreconv.convert("#{Rails.root}/tmp/#{file_cargado.filename.to_s}", "#{Rails.root}/tmp/#{file_cargado.filename.to_s}.pdf")      
-          
-          documento_master.attach(io: File.open("#{Rails.root}/tmp/#{file_cargado.filename.to_s}.pdf"), filename: "#{file_cargado.filename.to_s}.pdf", content_type: "application/pdf")
+      Libreconv.convert("#{Rails.root}/tmp/#{file_cargado.filename.to_s}", "#{Rails.root}/tmp/#{file_cargado.filename.to_s}.pdf")
 
-          #ELIMINACIÓN DE LOS ARCHIVOS TEMPORALES
-          File.delete("#{Rails.root}/tmp/#{file_cargado.filename.to_s}")
-          File.delete("#{Rails.root}/tmp/#{file_cargado.filename.to_s}.pdf")
+      documento_master.attach(io: File.open("#{Rails.root}/tmp/#{file_cargado.filename.to_s}.pdf"), filename: "#{file_cargado.filename.to_s}.pdf", content_type: "application/pdf")
 
-        end
+      #ELIMINACIÓN DE LOS ARCHIVOS TEMPORALES
+      File.delete("#{Rails.root}/tmp/#{file_cargado.filename.to_s}")
+      File.delete("#{Rails.root}/tmp/#{file_cargado.filename.to_s}.pdf")
+    end
   end
 
   def var_preview_docs(file_original, file_preview)
@@ -215,7 +226,7 @@ module Utilidades
     icono_descarga = ''
     titulo_btn_download = ''
     class_btn_download = ''
-  
+
     if file_original.content_type == 'application/pdf'
       docto_for_preview = file_original.blob
       iconito = '<i style="color: red" class="fas fa-file-pdf fa-2x"></i>'
@@ -257,4 +268,69 @@ module Utilidades
 
     return respuesta
   end
-end 
+
+  # Tamaño a imagen
+  def resize_image(image, width, height)
+    image = MiniMagick::Image.new(image.tempfile.path)
+    image.resize "#{width}x#{height}"
+    image
+  end
+
+  # Convertir imagen a base64 "CLOB"
+  def convert_to_clob(image)
+    base64_image = Base64.encode64(image.to_blob)
+    "data:image/png;base64,#{base64_image}"
+  end
+
+  def format_estado(status, convertir="N")
+    if status == "A"
+      badge_estado = "badge badge-success"
+      nombre_estado = convertir=="N" ? "Activo" : convertir=="S" ? "Activo".upcase : "No Aplica"
+    elsif status == "I"
+      badge_estado = "badge badge-danger"
+      nombre_estado = convertir=="N" ? "Inactivo" : convertir=="S" ? "Inactivo".upcase : "No Aplica"
+    end
+
+    return "<div class='text-center'><span class='#{badge_estado}'>#{nombre_estado}</span></div>".html_safe
+  end
+
+  def desc_estado(status)
+    descripcion_estado = nil
+
+    if status == "A"
+      descripcion_estado = "ACTIVO"
+    elsif status == "I"
+      descripcion_estado = "INACTIVO"
+    elsif status == "C"
+      descripcion_estado = "CANCELADO"
+    elsif status == "P"
+      descripcion_estado = "EN PROCESO"
+    elsif status == "F"
+      descripcion_estado = "FINALIZADO"
+    end
+  end
+
+  def valida_pregunta(valor)
+    if valor == 'N' || valor == false
+      respuesta = 'NO'
+    elsif valor == 'S' || valor == true
+      respuesta = 'SI'
+    end
+
+    return respuesta
+  end
+
+  def format_digitos(correlativo, formato)
+    if !correlativo.nil?
+      respuesta = correlativo.to_s.rjust(formato,"0")
+    end
+
+    return respuesta
+  end
+
+  def generate_temp_password(length = 12)
+    chars = ('a'..'z').to_a + ('A'..'Z').to_a + (0..9).to_a + %w(! @ # $ % & *)
+    password = Array.new(length) { chars.sample }.join
+    password
+  end
+end

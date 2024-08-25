@@ -13,8 +13,10 @@
 #  updated_at      :datetime         not null
 #
 class Menu < ApplicationRecord
-    has_many :opciones, class_name: "Opcion"
-    validates_presence_of :nombre, :descripcion, :icono, message: ": este campo es obligatorio"  
-    validates :nombre, uniqueness: {case_sensitive: false, scope: :estado, message: "El nombre que intenta registrar ya existe" } 
-    
+    has_many :opciones
+    has_many :menu_roles
+
+    validates_presence_of :nombre, :descripcion, :icono, message: ": este campo es obligatorio"
+    validates :nombre, uniqueness: {case_sensitive: false, scope: :estado, message: "El nombre que intenta registrar ya existe" }
+
 end
