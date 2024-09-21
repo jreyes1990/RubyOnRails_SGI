@@ -201,6 +201,8 @@ GEM
     msgpack (1.7.2)
     multi_json (1.15.0)
     nenv (0.3.0)
+    net-http (0.4.1)
+      uri
     net-imap (0.3.7)
       date
       net-protocol
@@ -369,6 +371,7 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.11)
       thread_safe (~> 0.1)
+    uri (0.13.1)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -421,6 +424,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   libreconv
   listen (~> 3.2)
+  net-http
   net-ssh (>= 6.0.2)
   puma (~> 4.1)
   rack-livereload

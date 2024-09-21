@@ -8,10 +8,11 @@
 #
 # https://github.com/mileszs/wicked_pdf/blob/master/README.md
 
-WickedPdf.config = {
+WickedPdf.configure do |config|
   # Path to the wkhtmltopdf executable: This usually isn't needed if using
   # one of the wkhtmltopdf-binary family of gems.
-  # exe_path: '/usr/local/bin/wkhtmltopdf',
+  # config.exe_path: '/usr/local/bin/wkhtmltopdf',
+  config.exe_path = '/usr/local/bin/wkhtmltopdf' # Asegúrate de que este sea el path correcto en tu sistema
   #   or
   # exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
 
@@ -25,4 +26,4 @@ WickedPdf.config = {
   #
   # use_xvfb: true,
   #:exe_path => 'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-}
+end
