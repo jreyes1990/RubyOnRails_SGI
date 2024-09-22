@@ -55,8 +55,6 @@ development:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-# production:
-#   <<: *default
-#   database: XE
-#   username: SIG
-#   password: hn89-cPx
+production:
+  <<: *default
+  database: XE
