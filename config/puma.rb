@@ -35,9 +35,9 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 preload_app!
 
 # Bloque necesario para asegurar que los workers se conecten correctamente a la base de datos
-# on_worker_boot do
-#   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
-# end
+on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end
 
 # Allow puma to be restarted by `rails restart` command.
 # Reiniciar Puma con el comando `rails restart`
