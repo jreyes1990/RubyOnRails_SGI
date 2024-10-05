@@ -4,8 +4,8 @@ class PersonasAreasController < ApplicationController
 
   # GET /personas_areas or /personas_areas.json
   def index
-    @personas_areas = PersonasArea.where(:estado => 'A').order(:id)
-   
+    @personas_areas = PersonasArea.includes(:persona, area: [:empresa]).where(:estado => 'A').order(:id)
+
   end
 
   # GET /personas_areas/1 or /personas_areas/1.json
@@ -41,7 +41,7 @@ class PersonasAreasController < ApplicationController
 
   # PATCH/PUT /personas_areas/1 or /personas_areas/1.json
   def update
-    
+
     persona_id = params[:personas_area][:persona_id]
     area_id = params[:personas_area][:area_id]
 
@@ -60,10 +60,10 @@ class PersonasAreasController < ApplicationController
                                             inner join personas_areas on personas_areas.persona_id = personas.id
                                             where personas_areas.persona_id = #{persona_id}").first
 
-        
+
       if @existencia_parametro.blank?
 
-        #ACTUALIZA PORQUE NO EXISTE EN PARAMETRO 
+        #ACTUALIZA PORQUE NO EXISTE EN PARAMETRO
         @personas_area.user_updated_id = current_user.id
         respond_to do |format|
           if @personas_area.update(personas_area_params)
@@ -73,12 +73,12 @@ class PersonasAreasController < ApplicationController
             format.html { render :edit, status: :unprocessable_entity }
             format.json { render json: @personas_area.errors, status: :unprocessable_entity }
           end
-        end        
+        end
 
       else
-        #ELIMINA PRIMERO PARAMETROS Y DESPUES MODIFICA PERSONA AREA 
+        #ELIMINA PRIMERO PARAMETROS Y DESPUES MODIFICA PERSONA AREA
         @usuario_existe_parametro = Parametro.find(@existencia_parametro.id)
-                 
+
         if @usuario_existe_parametro.destroy
           #YA ELIMINO AHORA MODIFICA PERSONA AREA
           @personas_area.user_updated_id = current_user.id
@@ -92,12 +92,12 @@ class PersonasAreasController < ApplicationController
               end
             end
         else
-            
+
             format.html { render :edit, status: :unprocessable_entity }
             format.json { render json: @usuario_existe_parametro.errors, status: :unprocessable_entity }
-          
-        end 
-      end 
+
+        end
+      end
     else
 
       #SOLO ACTUALIZA SIN MODIFICAR PARAMETROS ES IGUAL
@@ -112,7 +112,7 @@ class PersonasAreasController < ApplicationController
         end
       end
 
-      
+
 
     end
   end
@@ -130,7 +130,7 @@ class PersonasAreasController < ApplicationController
  def inactivar_usuario_area
   @personas_area = PersonasArea.find(params[:id])
   @cantidad_personas_area = PersonasArea.where('persona_id = ?', @personas_area.persona_id).count
-  
+
   if @cantidad_personas_area > 1
     @personas_area.user_updated_id = current_user.id
     @personas_area.estado = "I"
@@ -144,7 +144,7 @@ class PersonasAreasController < ApplicationController
           if @existencia_parametro.blank?
               format.html { redirect_to personas_areas_path, notice: "Asignación Usuario-Área Inactivada" }
               format.json { render :show, status: :created, location: @personas_area }
-          else 
+          else
             @parametro = Parametro.where('user_id = ? and area_id = ?',@existencia_parametro.id, @existencia_parametro.area_id).first
             if @parametro.blank?
                 format.html { redirect_to personas_areas_path, notice: "Asignación Usuario-Área Inactivada" }
@@ -153,33 +153,33 @@ class PersonasAreasController < ApplicationController
               if @parametro.destroy
                 format.html { redirect_to personas_areas_path, notice: "Asignación Usuario-Área Inactivada" }
                 format.json { render :show, status: :created, location: @personas_area }
-              else 
+              else
                 format.html { render :new, status: :unprocessable_entity }
                 format.json { render json: @parametro.errors, status: :unprocessable_entity }
-              end  
-            end 
-              
+              end
+            end
 
-          end         
+
+          end
         else
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @personas_area.errors, status: :unprocessable_entity }
         end
       end
-  else 
+  else
     respond_to do |format|
       format.html { redirect_to personas_areas_path, alert: "La persona no puede estar sin un área asignada." }
       format.json { render :show, status: :created, location: @personas_area }
-    end 
-  
-  end 
-  
+    end
+
+  end
+
 end
 
 #METODO PARA BUSCAR LAS AREAS POR EMPRESA
 def search_areas_by_empresa
   empresa_id = params[:empresa_id]
-  
+
 
 end
 

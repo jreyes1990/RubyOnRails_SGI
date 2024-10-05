@@ -258,7 +258,7 @@ document.addEventListener("turbolinks:load", () => {
   agrupar_filas(
     '#datatable_area',
     [
-      { columnIndex: 3, label: '' }
+      { columnIndex: 3, label: 'Empresa ' }
     ],
     [
       { responsivePriority: 1, targets: [0] },
@@ -271,8 +271,8 @@ document.addEventListener("turbolinks:load", () => {
   agrupar_filas(
     '#datatable_usuario_area',
     [
-      { columnIndex: 3, label: '' },
-      { columnIndex: 2, label: '' }
+      { columnIndex: 3, label: 'Empresa ' },
+      { columnIndex: 2, label: 'Área ' }
     ],
     [
       { responsivePriority: 1, targets: [0] },
@@ -285,7 +285,7 @@ document.addEventListener("turbolinks:load", () => {
   agrupar_filas(
     '#datatable_opcion',
     [
-      { columnIndex: 6, label: '' }
+      { columnIndex: 6, label: 'Menú ' }
     ],
     [
       { responsivePriority: 1, targets: [0, 2] },
@@ -298,8 +298,8 @@ document.addEventListener("turbolinks:load", () => {
   agrupar_filas(
     '#datatable_menu_rol',
     [
-      { columnIndex: 1, label: '' },
-      { columnIndex: 3, label: '' }
+      { columnIndex: 1, label: 'Rol ' },
+      { columnIndex: 3, label: 'Menú ' }
     ],
     [
       { responsivePriority: 1, targets: [0] },

@@ -155,7 +155,7 @@ document.addEventListener("turbolinks:load", () => {
   agrupar_filas(
     '#opcionCa_datatable',
     [
-      { columnIndex: "opcion", label: '', indexOrden: 1 }
+      { columnIndex: "opcion", label: 'Opción-Menú : ', indexOrden: 1 }
     ],
     [
       { responsivePriority: 1, targets: [0] },

@@ -5,7 +5,7 @@ class AreasController < ApplicationController
   # GET /areas or /areas.json
   def index
     #@areas = Area.all
-    @areas = Area.order(:id)
+    @areas = Area.includes(:empresa).order(:id)
   end
 
   # GET /areas/1 or /areas/1.json

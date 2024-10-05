@@ -1,10 +1,10 @@
 class MenuRolesController < ApplicationController
   before_action :set_menu_rol, only: %i[ show edit update destroy ]
   before_action :comprobar_permiso
-  
+
   # GET /menu_roles or /menu_roles.json
   def index
-    @menu_roles = MenuRol.order(:id)
+    @menu_roles = MenuRol.includes(:rol, opcion: [:menu, :sub_opcion]).order(:id)
   end
 
   # GET /menu_roles/1 or /menu_roles/1.json
@@ -27,9 +27,9 @@ class MenuRolesController < ApplicationController
     @menu_rol.rol_id =  params[:menu_rol][:roles_id]
     @menu_rol.opcion_id =  params[:menu_rol][:opciones_id]
     @menu_rol.estado = "A"
-    
+
     @menu_rol.user_created_id = current_user.id
- 
+
     respond_to do |format|
       if @menu_rol.save
         format.html { redirect_to menu_roles_path, notice: "Asignación de Menú por Rol creada" }
@@ -105,7 +105,7 @@ class MenuRolesController < ApplicationController
     def set_menu_rol
       @menu_rol = MenuRol.find(params[:id])
     end
-   
+
     # Only allow a list of trusted parameters through.
     def menu_rol_params
       params.require(:menu_rol).permit(:roles_id, :opciones_id, :menu_padre)

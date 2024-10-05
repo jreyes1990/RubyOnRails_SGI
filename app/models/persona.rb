@@ -31,5 +31,5 @@ class Persona < ApplicationRecord
     "#{self.nombre} #{self.apellido} - #{self.user.email}"
   end
 
-  
+
 end

@@ -1,4 +1,4 @@
-class OpcionCaDatatable < AjaxDatatablesRails::ActiveRecord 
+class OpcionCaDatatable < AjaxDatatablesRails::ActiveRecord
   extend Forwardable
 
   #Definición de los Helpers de la vista
@@ -27,9 +27,9 @@ class OpcionCaDatatable < AjaxDatatablesRails::ActiveRecord
     }
   end
 
-  def data    
-    records.map do |record|    
-        {        
+  def data
+    records.map do |record|
+        {
             id: record.id,
             opcion: record.opcion.try(:nombre),
             componente: record.componente.try(:nombre),
@@ -39,18 +39,18 @@ class OpcionCaDatatable < AjaxDatatablesRails::ActiveRecord
             editar: show_btn_editar(record),
             inactivar: show_btn_eliminar(record)
         }
-      
+
     end
   end
 
   def get_raw_records
-    OpcionCa.joins(:opcion, :componente, :atributo).where(:estado => 'A').order(:id)
+    OpcionCa.includes(:componente, :atributo, opcion: [:menu, :sub_opcion]).joins(:opcion, :componente, :atributo).where(:estado => 'A').order(:id)
   end
 
   def show_btn_editar(value)
     btnEditar = nil
     if tiene_permiso("BOTON EDITAR REGISTRO", "VER")
-        btnEditar =  link_to("<i class='fas fa-edit'></i>".html_safe, edit_opcion_ca_path(value), class: "btn btn-outline-info btn-sm ") 
+        btnEditar =  link_to("<i class='fas fa-edit'></i>".html_safe, edit_opcion_ca_path(value), class: "btn btn-outline-info btn-sm ")
     else
       btnEditar = ""
     end
@@ -60,7 +60,7 @@ class OpcionCaDatatable < AjaxDatatablesRails::ActiveRecord
   def show_btn_eliminar(value)
     btnInactivar = nil
     if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER")
-        btnInactivar = link_to("<i class='fas fa-trash-alt'></i>".html_safe, inactivar_opcion_ca_path(:id => value.id), class: "btn btn-outline-danger btn-sm", data: { confirm: '¿Seguro que desea eliminar el registro, esta acción no puede desahacerse?' }) 
+        btnInactivar = link_to("<i class='fas fa-trash-alt'></i>".html_safe, inactivar_opcion_ca_path(:id => value.id), class: "btn btn-outline-danger btn-sm", data: { confirm: '¿Seguro que desea eliminar el registro, esta acción no puede desahacerse?' })
     else
       btnInactivar = ""
     end

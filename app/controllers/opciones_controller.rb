@@ -4,7 +4,7 @@ class OpcionesController < ApplicationController
 
   # GET /opciones or /opciones.json
   def index
-    @opciones = Opcion.order("id DESC")
+    @opciones = Opcion.includes(:menu, :sub_opcion).order("id DESC")
   end
 
   # GET /opciones/1 or /opciones/1.json
