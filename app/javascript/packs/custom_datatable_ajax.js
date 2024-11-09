@@ -178,263 +178,83 @@ document.addEventListener("turbolinks:load", () => {
     }
   );
 
-  agrupar_filas(
-    '#documento-datatable',
-    [],
-    [
-      { responsivePriority: 1, targets: [0] },
-      { responsivePriority: 1, targets: [-1, -2] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [4] },
-      { responsivePriority: 2, targets: [-3, -4, -5] },
-      { responsivePriority: 3, targets: [1, 2, 3, 5, 6] }
-    ],
-    opciones,
-    [
-      { data: "id", class: "text-center" },
-      { data: "abr_sistema", class: "text-center" },
-      { data: "abr_proceso", class: "text-center" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "abr_tipo_docto", class: "text-center" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_pdf", class: "text-center" },
-      { data: "docto_word", class: "text-center" },
-      { data: "docto_excel", class: "text-center" },
-      { data: "editar", class: "text-center" },
-      { data: "inactivar", class: "text-center" }
-    ],
-    {
-      url: $('#documento-datatable').data('source')
-    }
-  );
+  $(document).ready(function () {
+    const verPdfInput = document.getElementById('verPdf_docto');
+    const verWordInput = document.getElementById('verWord_docto');
+    const verExcelInput = document.getElementById('verExcel_docto');
+    const editarRegistroInput = document.getElementById('editarRegistro_docto');
+    const eliminarRegistroInput = document.getElementById('eliminarRegistro_docto');
 
-  agrupar_filas(
-    '#documento-limitado-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1, -2, -3] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [-4, -5, -6] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_pdf", class: "text-center" },
-      { data: "docto_word", class: "text-center" },
-      { data: "docto_excel", class: "text-center" }
-    ],
-    {
-      url: $('#documento-limitado-datatable').data('source')
-    }
-  );
+    // Verificar que cada elemento existe antes de intentar obtener su valor
+    const verPdf = verPdfInput ? JSON.parse(verPdfInput.value) : false;
+    const verWord = verWordInput ? JSON.parse(verWordInput.value) : false;
+    const verExcel = verExcelInput ? JSON.parse(verExcelInput.value) : false;
+    const editarRegistro = editarRegistroInput ? JSON.parse(editarRegistroInput.value) : false;
+    const eliminarRegistro = eliminarRegistroInput ? JSON.parse(eliminarRegistroInput.value) : false;
 
-  agrupar_filas(
-    '#documento-ver-pdf-word-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1, -2] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [-3, -4, -5] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_pdf", class: "text-center" },
-      { data: "docto_word", class: "text-center" }
-    ],
-    {
-      url: $('#documento-ver-pdf-word-datatable').data('source')
+    // Inicio Llamada a la función generarColumnasOrdenadasConLabel
+    function generarColumnasOrdenadasConLabel() {
+      if (!editarRegistro && !eliminarRegistro) {
+        return [
+          { columnIndex: "abr_clasifica", label: 'Clasificación: ', indexOrden: 0 },
+          { columnIndex: "abr_sistema", label: 'Sistema: ', indexOrden: 1 },
+          { columnIndex: "abr_proceso", label: 'Proceso: ', indexOrden: 2 },
+        ];
+      } else {
+        return [];
+      }
     }
-  );
 
-  agrupar_filas(
-    '#documento-ver-pdf-excel-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1, -2] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [3, 4, 5] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_pdf", class: "text-center" },
-      { data: "docto_excel", class: "text-center" }
-    ],
-    {
-      url: $('#documento-ver-pdf-excel-datatable').data('source')
+    // Inicio Llamada a la función getColumnasConPermisos con los valores de permisos adecuados
+    function getColumnasConPermisos(verPdf, verWord, verExcel, editarRegistro, eliminarRegistro) {
+      const columnasComunes = [
+        { data: "abr_clasifica", class: "text-center" },
+        { data: "abr_sistema", class: "text-center" },
+        { data: "abr_proceso", class: "text-center" },
+        { data: "codigo_documento", class: "text-center" },
+        { data: "nombre_documento" },
+        { data: "abr_tipo_docto", class: "text-center" },
+        { data: "version_actual", class: "text-center" },
+        { data: "fecha_documento", class: "text-center" },
+      ];
+
+      // Arreglo de opciones para columnas opcionales basadas en permisos
+      const opciones = [
+        { permiso: verPdf, columna: { data: "docto_pdf", class: "text-center" } },
+        { permiso: verWord, columna: { data: "docto_word", class: "text-center" } },
+        { permiso: verExcel, columna: { data: "docto_excel", class: "text-center" } },
+        { permiso: editarRegistro, columna: { data: "editar", class: "text-center" } },
+        { permiso: eliminarRegistro, columna: { data: "inactivar", class: "text-center" } }
+      ];
+
+      // Itera sobre las opciones y agrega las columnas con permisos activos
+      opciones.forEach(opcion => {
+        if (opcion.permiso) {
+          columnasComunes.push(opcion.columna);
+        }
+      });
+
+      return columnasComunes;
     }
-  );
 
-  agrupar_filas(
-    '#documento-ver-pdf-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [3, 4, 5] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_pdf", class: "text-center" }
-    ],
-    {
-      url: $('#documento-ver-pdf-datatable').data('source')
-    }
-  );
-
-  agrupar_filas(
-    '#documento-ver-word-excel-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1, -2] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [3, 4, 5] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_word", class: "text-center" },
-      { data: "docto_excel", class: "text-center" }
-    ],
-    {
-      url: $('#documento-ver-word-excel-datatable').data('source')
-    }
-  );
-
-  agrupar_filas(
-    '#documento-ver-word-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [3, 4, 5] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_word", class: "text-center" }
-    ],
-    {
-      url: $('#documento-ver-word-datatable').data('source')
-    }
-  );
-
-  agrupar_filas(
-    '#documento-ver-excel-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [3, 4, 5] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" },
-      { data: "docto_excel", class: "text-center" }
-    ],
-    {
-      url: $('#documento-ver-excel-datatable').data('source')
-    }
-  );
-
-  agrupar_filas(
-    '#documento-sin-botones-datatable',
-    [
-      { columnIndex: "abr_clasifica", label: 'CLASIFICACIÓN: ', indexOrden: 0 },
-      { columnIndex: "abr_sistema", label: 'SISTEMA: ', indexOrden: 1 },
-      { columnIndex: "abr_proceso", label: 'PROCESO: ', indexOrden: 2 }
-    ],
-    [
-      { responsivePriority: 1, targets: [2] },
-      { responsivePriority: 1, targets: [-1] }, // Muestra las últimas dos columnas
-      { responsivePriority: 2, targets: [3, 4] },
-    ],
-    opciones,
-    [
-      { data: "abr_clasifica" },
-      { data: "abr_sistema" },
-      { data: "abr_proceso" },
-      { data: "codigo_documento", class: "text-center" },
-      { data: "nombre_documento" },
-      { data: "version_actual", class: "text-center" },
-      { data: "fecha_documento", class: "text-center" }
-    ],
-    {
-      url: $('#documento-sin-botones-datatable').data('source')
-    }
-  );
-
+    // Inicio datatable para la vista permiso usuario por bodega y transaccion
+    agrupar_filas(
+      '#documento-usuario-datatable',
+      generarColumnasOrdenadasConLabel(),
+      [
+        { responsivePriority: 1, targets: [-1, -2] }, // Muestra las últimas dos columnas
+      ],
+      opciones,
+      getColumnasConPermisos(verPdf, verWord, verExcel, editarRegistro, eliminarRegistro),
+      {
+        url: $('#documento-usuario-datatable').data('source'),
+        type: "GET",
+        dataType: "json",
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+        }
+      },
+    );
+  });
+  
 });

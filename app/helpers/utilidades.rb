@@ -320,13 +320,13 @@ module Utilidades
     return respuesta
   end
 
-  def format_digitos(correlativo, formato)
-    if !correlativo.nil?
-      respuesta = correlativo.to_s.rjust(formato,"0")
-    end
+  # def format_digitos(correlativo, formato)
+  #   if !correlativo.nil?
+  #     respuesta = correlativo.to_s.rjust(formato,"0")
+  #   end
 
-    return respuesta
-  end
+  #   return respuesta
+  # end
 
   def generate_temp_password(length = 12)
     chars = ('a'..'z').to_a + ('A'..'Z').to_a + (0..9).to_a + %w(! @ # $ % & *)

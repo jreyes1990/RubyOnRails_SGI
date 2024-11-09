@@ -222,6 +222,7 @@ class PersonaEmpresaFormulariosController < ApplicationController
 
     @personaEA = PersonasArea.where("area_id = ? and persona_id = ?", session[:id_area_persona_consulta_permiso], session[:id_persona_consulta_permiso]).first
     @permisosSeleccionados = params[:permisoids]
+    asigna_rol_persona = params[:add_permisos][:perfil_id]
     @tipoAsignacion = ""
     @resultado = 0
     if params_permisos[:options] == "0"
@@ -237,10 +238,14 @@ class PersonaEmpresaFormulariosController < ApplicationController
           @permisoUsuario.opcion_ca_id = acpo.to_i
           @permisoUsuario.descripcion = @tipoAsignacion
           @permisoUsuario.estado = "A"
+          @permisoUsuario.user_created_id = current_user.id
           @permisoUsuario.save
         end
         respond_to do |format|
           format.html { redirect_to mostrar_permisos_path, notice: "Permisos otorgados al usuario exitosamente" }
+        end
+        if @tipoAsignacion == "PERFIL"
+          @actualizar_rol = PersonasArea.where("area_id = ? and persona_id = ?", session[:id_area_persona_consulta_permiso], session[:id_persona_consulta_permiso]).first.update(rol_id: asigna_rol_persona)
         end
       else
         respond_to do |format|

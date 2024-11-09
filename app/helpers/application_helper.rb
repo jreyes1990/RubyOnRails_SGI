@@ -83,7 +83,7 @@ module ApplicationHelper
                                 .left_joins(:rol, persona: [:user], area: [:empresa])
                                 .where(personas_areas: {areas: {empresa_id: search_params.empresa_id}, area_id: search_params.area_id, personas: {user_id: search_params.user_id}}).limit(1).first
 
-      return role_persona&.rol.nombre&.upcase || ""
+      return role_persona&.rol.try(:nombre) || ""
     else
       return ""
     end

@@ -16,6 +16,7 @@
 
                   <%= f.input :nombre_usuario, required: false, input_html: { value: @persona.nombre_completo_con_email, disabled: true } %>
                   <%= f.hidden_field :persona_id, :value => @persona.id %>
+                  <%= f.hidden_field :user_created_id, :value => current_user.id %>
 
                   <%= f.input :area_id, required: false, input_html: { value: @area.nombre_area_empresa, disabled: true } %>
 

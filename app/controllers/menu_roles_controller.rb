@@ -22,10 +22,11 @@ class MenuRolesController < ApplicationController
 
   # POST /menu_roles or /menu_roles.json
   def create
-    #@menu_rol = MenuRol.new(menu_rol_params)
-    @menu_rol = MenuRol.new
-    @menu_rol.rol_id =  params[:menu_rol][:roles_id]
-    @menu_rol.opcion_id =  params[:menu_rol][:opciones_id]
+    @menu_rol = MenuRol.new(menu_rol_params)
+    # @menu_rol = MenuRol.new
+    # @menu_rol.rol_id =  params[:menu_rol][:roles_id]
+    # @menu_rol.opcion_id =  params[:menu_rol][:opciones_id]
+    # @menu_rol.menu_id =  params[:menu_rol][:menus_id]
     @menu_rol.estado = "A"
 
     @menu_rol.user_created_id = current_user.id
@@ -45,6 +46,7 @@ class MenuRolesController < ApplicationController
   def update
     @menu_rol.rol_id =  params[:menu_rol][:roles_id]
     @menu_rol.opcion_id =  params[:menu_rol][:opciones_id]
+    @menu_rol.menu_id =  params[:menu_rol][:menus_id]
     @menu_rol.user_updated_id = current_user.id
 
     respond_to do |format|
@@ -108,6 +110,6 @@ class MenuRolesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def menu_rol_params
-      params.require(:menu_rol).permit(:roles_id, :opciones_id, :menu_padre)
+      params.require(:menu_rol).permit(:rol_id, :opcion_id, :menu_id)
     end
 end

@@ -29,17 +29,17 @@
 
               <div class="field">
                 <%= form.label :Menu %>
-                <%= collection_select(:menu, :menu_id, Menu.where(:estado => 'A').order(:nombre), :id, :nombre,  {:prompt => "Seleccione un Menú"}, {:class => "form-control select2", :required => ''}) %>
+                <%= form.collection_select(:menu_id, Menu.where(:estado => 'A').order(:nombre), :id, :nombre,  {:prompt => "Seleccione un Menú"}, {:class => "form-control select2", :required => ''}) %>
               </div>
               <br />
               <div class="field">
                 <%= form.label :opcion %>
-                <%= form.grouped_collection_select(:opciones_id, Menu.where(:estado => 'A').order(:nombre), :opciones, :nombre, :id, :nombre, {:prompt => "Seleccione una Área"}, {:class => "form-control select2", :required => '', :type => "select"}) %>
+                <%= form.grouped_collection_select(:opcion_id, Menu.where(:estado => 'A').order(:nombre), :opciones, :nombre, :id, :nombre, {:prompt => "Seleccione una Área"}, {:class => "form-control select2", :required => '', :type => "select"}) %>
               </div>
               <br />
               <div class="field">
                 <%= form.label :rol %>
-                <%= form.collection_select(:roles_id, Rol.where(:estado => 'A'), :id, :nombre,  {:prompt => "Seleccione un Rol"}, {:class => "form-control select2", :required => ''}) %>
+                <%= form.collection_select(:rol_id, Rol.where(:estado => 'A'), :id, :nombre,  {:prompt => "Seleccione un Rol"}, {:class => "form-control select2", :required => ''}) %>
               </div>
 
             </div>

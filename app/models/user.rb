@@ -21,12 +21,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable
 
   has_one :persona, dependent: :destroy
-  after_create :set_persona
+  #after_create :set_persona
   has_many :permiso_documento_usuarios
 
-  def set_persona
-    self.persona = Persona.create()
-  end
+  # def set_persona
+  #   self.persona = Persona.create()
+  # end
 
   def active_for_authentication?
     if self.estado == 'I'

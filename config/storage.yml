@@ -35,13 +35,14 @@
 
 #CONFIGURACIÓN PARA ARCHIVOS EN GOOGLE DRIVE DE TIPO MIRROR
 #local:
-  #service: Disk
-  #root: <%= Pathname('https://drive.google.com/drive/folders/1p0OGa2CoujhmHpaQ_BtLtr-kc8mqIceF?usp=sharing')  %>
-  #root: <%= Pathname('/run/user/1000/gvfs/google-drive:host=madretierra.com.gt,user=jreyes')  %>
-  #root: <%= Pathname('/run/user/1000/gvfs/google-drive:host=madretierra.com.gt,user=jreyes')  %>
+#service: Disk
+#root: <%= Pathname('https://drive.google.com/drive/folders/1p0OGa2CoujhmHpaQ_BtLtr-kc8mqIceF?usp=sharing')  %>
+#root: <%= Pathname('/run/user/1000/gvfs/google-drive:host=madretierra.com.gt,user=jreyes')  %>
+#root: <%= Pathname('/run/user/1000/gvfs/google-drive:host=madretierra.com.gt,user=jreyes')  %>
 
 #CONFIGURACION PARA ALMACENAMIENTO EN RUTA DEL SERVIDOR NO EN APP RAILS
 local:
   service: Disk
+  root: <%= Pathname('/home/jreyes/Insync/jreyesl1@miumg.edu.gt/Google Drive/carga_documento/doctos_sgi/') %>
   #root: <= Pathname('/home/jreyes/Insync/jreyes@madretierra.com.gt/Google Drive/carga_documento/documentos_SGI/') %>
-  root: <%= Pathname('/home/web/apps/sgi/documentos/') %>
+  # root: <= Pathname('/home/web/apps/sgi/documentos/') %>

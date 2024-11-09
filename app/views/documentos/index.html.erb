@@ -36,14 +36,22 @@
         <% end %>
       </div>
     </div>
-    
+    <input type="hidden" id="verPdf_docto" value="<%= @p_ver_pdf %>">
+    <input type="hidden" id="verWord_docto" value="<%= @p_ver_word %>">
+    <input type="hidden" id="verExcel_docto" value="<%= @p_ver_excel %>">
+    <input type="hidden" id="editarRegistro_docto" value="<%= @p_editar_registro %>">
+    <input type="hidden" id="eliminarRegistro_docto" value="<%= @p_eliminar_registro %>">
     <div class="row">
       <div class="col-md-12 table-responsive-sm">
-        <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") && tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
-          <table id="documento-datatable" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%" data-source="<%= documentos_path(format: :json) %>">
+        
+          <table id="documento-usuario-datatable" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%" data-source="<%= documentos_path(format: :json) %>">
             <thead class="thead-light">
             <tr>
-              <th>Id</th>
+              <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") || tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
+                <th class="text-center">ID</th>
+              <% else %>
+                <th class="text-center">Clasificación</th>
+              <% end %>
               <th class="text-center">Sistema</th>
               <th class="text-center">Proceso</th>
               <th class="text-center" style="width: 12%;">Codigo</th>
@@ -51,75 +59,21 @@
               <th class="text-center">Tipo<br>Documento</th>
               <th class="text-center">Version</th>
               <th class="text-center">Fecha</th>
+              
               <% if tiene_permiso("BOTON VER PDF", "VER") %>
-              <th class="text-center" style="width: 3%;">PDF</th>
-              <% else %>
-              <th></th>
+              <th class="text-center" style="width: 3%;"></th>
               <% end %>
               <% if tiene_permiso("BOTON VER WORD", "VER") %>
-              <th class="text-center" style="width: 3%;">WORD</th>
-              <% else %>
-              <th></th>
+              <th class="text-center" style="width: 3%;"></th>
               <% end %>
               <% if tiene_permiso("BOTON VER EXCEL", "VER") %>
-              <th class="text-center" style="width: 3%;">EXCEL</th>
-              <% else %>
-              <th></th>
+              <th class="text-center" style="width: 3%;"></th>
               <% end %>
               <% if tiene_permiso("BOTON EDITAR REGISTRO", "VER") %>
-              <th class="text-center" style="width: 3%;">Editar</th>
-              <% else %>
-              <th></th>
+              <th class="text-center" style="width: 3%;"></th>
               <% end %>
               <% if tiene_permiso("BOTON ELIMINAR REGISTRO", "VER") %>
-              <th class="text-center" style="width: 3%;">Eliminar</th>
-              <% else %>
-              <th></th>
-              <% end %>
-            </tr>
-            </thead>
-
-            <tbody>
-            
-            </tbody>
-          </table>
-        <% else %>
-          <% if tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-limitado-datatable"
-          elsif tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && !tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-ver-pdf-word-datatable"
-          elsif tiene_permiso("BOTON VER PDF", "VER") && !tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-ver-pdf-excel-datatable"
-          elsif tiene_permiso("BOTON VER PDF", "VER") && !tiene_permiso("BOTON VER WORD", "VER") && !tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-ver-pdf-datatable"
-          elsif !tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-ver-word-excel-datatable"
-          elsif !tiene_permiso("BOTON VER PDF", "VER") && tiene_permiso("BOTON VER WORD", "VER") && !tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-ver-word-datatable"
-          elsif !tiene_permiso("BOTON VER PDF", "VER") && !tiene_permiso("BOTON VER WORD", "VER") && tiene_permiso("BOTON VER EXCEL", "VER") 
-            datatable_documento = "documento-ver-excel-datatable"
-          else
-            datatable_documento = "documento-sin-botones-datatable"
-          end %>
-
-          <table id="<%= datatable_documento %>" class="table table-hover table-sm table-bordered display" cellspacing="0" style="width:100%" data-source="<%= documentos_path(format: :json) %>">
-            <thead class="thead-light">
-            <tr>
-              <th class="text-center">Clasificación</th>
-              <th class="text-center">Sistema</th>
-              <th class="text-center">Proceso</th>
-              <th class="text-center" style="width: 12%;">Codigo</th>
-              <th>Nombre</th>
-              <th class="text-center">Version</th>
-              <th class="text-center">Fecha</th>
-              <% if tiene_permiso("BOTON VER PDF", "VER") %>
-              <th class="text-center" style="width: 3%;">PDF</th>
-              <% end %>
-              <% if tiene_permiso("BOTON VER WORD", "VER") %>
-              <th class="text-center" style="width: 3%;">WORD</th>
-              <% end %>
-              <% if tiene_permiso("BOTON VER EXCEL", "VER") %>
-              <th class="text-center" style="width: 3%;">EXCEL</th>
+              <th class="text-center" style="width: 3%;"></th>
               <% end %>
             </tr>
             </thead>
@@ -127,7 +81,7 @@
             
             </tbody>
           </table>
-        <% end %>
+        
       </div>
     </div>
   </div>

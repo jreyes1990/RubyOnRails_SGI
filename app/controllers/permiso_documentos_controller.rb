@@ -4,15 +4,15 @@ class PermisoDocumentosController < ApplicationController
 
   # GET /permiso_documentos or /permiso_documentos.json
   def index
-    #@permiso_documentos = PermisoDocumento.order("tipo_usuario_id ASC")   
-    #@permiso_documentos = PermisoDocumento.select(:id, :tipo_usuario_id, :proceso_id, :tipo_sistema_id, :tipo_documento_id,:estado).group(:id, :tipo_usuario_id, :proceso_id, :tipo_sistema_id, :tipo_documento_id, :estado)    
+    #@permiso_documentos = PermisoDocumento.order("tipo_usuario_id ASC")
+    #@permiso_documentos = PermisoDocumento.select(:id, :tipo_usuario_id, :proceso_id, :tipo_sistema_id, :tipo_documento_id,:estado).group(:id, :tipo_usuario_id, :proceso_id, :tipo_sistema_id, :tipo_documento_id, :estado)
 
-    @clasifica_documento_id = params[:clasifica_documento_id]  
-    
+    @clasifica_documento_id = params[:clasifica_documento_id]
+
     @permiso_documento_encabezado = PermisoDocumento.select("tipo_usuario_id").order("tipo_usuario_id ASC").distinct
-    
 
-    respond_to do |format|    
+
+    respond_to do |format|
       format.html
       format.json { render json: PermisoDocumentoDatatable.new(params, view_context: view_context, clasifica_documento_id: @clasifica_documento_id) }
     end
@@ -39,7 +39,7 @@ class PermisoDocumentosController < ApplicationController
     key_compuesto_permiso = params[:permiso_documento][:tipo_documento_id]
     key_proceso = params[:permiso_documento][:proceso_id]
     documento = params[:permiso_documento][:documento_id]
-    
+
     key_proceso.each do |p|
       proceso = p.split("|")
       proceso[0].split(",").each do |f|
@@ -47,9 +47,9 @@ class PermisoDocumentosController < ApplicationController
         key_compuesto_permiso.each do |h|
           array_key_compuesto = h.split("|")
           tipo_doc_id = array_key_compuesto[2]
-          
+
           documento.each do |d|
-            
+
             if tipo_sistema_id != '0' && proceso[1] != '0' && tipo_doc_id != '0' && d != '0'
               @consulta_permiso_documento = Documento.where("tipo_sistema_id=? and proceso_id=? and tipo_documento_id=? and id=? and estado=?", tipo_sistema_id, proceso[1],tipo_doc_id,d,'A')
               if !@consulta_permiso_documento.blank?
@@ -319,12 +319,12 @@ class PermisoDocumentosController < ApplicationController
               genera_bitacora_acceso("PERMISO_DOCUMENTOS", "INSERTAR", @permiso_documento.tipo_usuario_id, @permiso_documento.tipo_sistema_id, @permiso_documento.proceso_id, @permiso_documento.tipo_documento_id, @permiso_documento.documento_id, @permiso_documento.id, nil, nil,
                                     nil, @permiso_documento.user_created_id, nil, @permiso_documento.estado)
             end
-          end 
+          end
         end
       end
-    end 
+    end
     respond_to do |format|
-      format.html { redirect_to permiso_documentos_url(@permiso_documento), notice: "La Clasificación de Permisos se ha creado correctamente." }
+      format.html { redirect_to permiso_documentos_url, notice: "La Clasificación de Permisos se ha creado correctamente." }
       format.json { render :show, status: :created, location: @permiso_documento }
     end
   end
@@ -421,7 +421,7 @@ class PermisoDocumentosController < ApplicationController
           genera_bitacora_acceso("PERMISO_DOCUMENTOS", "ACTIVAR", @permiso_documento.tipo_usuario_id, @permiso_documento.tipo_sistema_id, @permiso_documento.proceso_id, @permiso_documento.tipo_documento_id, @permiso_documento.documento_id, @permiso_documento.id, nil, nil,
                                nil, @permiso_documento.user_created_id, @permiso_documento.user_updated_id, @permiso_documento.estado)
         end
-        
+
       end
       flash[:notice] = "Documentos actualizados exitosamente."
     else
@@ -484,19 +484,19 @@ class PermisoDocumentosController < ApplicationController
   end
 
   def obtener_proceso_tipoDocumento
-    @key_proceso = params[:ids_proceso]   
-  
+    @key_proceso = params[:ids_proceso]
+
     @array_procesos = Array.new
     @sistema_id = nil
 
     @key_proceso.each do |p|
-      key_proceso_split = p.split("|")      
+      key_proceso_split = p.split("|")
       @array_procesos.push(key_proceso_split[1])
       @sistema_id  = key_proceso_split[0]
-    end 
+    end
 
     proceso = @array_procesos.join(",")
-    
+
     if @sistema_id != '0' && proceso == '0'
       @proceso_tipoDocumento = Documento.select(:tipo_documento_id).where("estado ='A' and tipo_sistema_id in(#{@sistema_id}) or tipo_sistema_id = 0").order("tipo_documento_id asc").distinct
     elsif @sistema_id != '0' && proceso != '0'
@@ -518,11 +518,11 @@ class PermisoDocumentosController < ApplicationController
     @array_tipo_documento = Array.new
 
     @key_tipoDocumento.each do |d|
-      key_tipo_doc_split = d.split("|")                  
+      key_tipo_doc_split = d.split("|")
       @sistema_id  = key_tipo_doc_split[0]
       @proceso_id  = key_tipo_doc_split[1]
-      @array_tipo_documento.push(key_tipo_doc_split[2])      
-    end 
+      @array_tipo_documento.push(key_tipo_doc_split[2])
+    end
     tipoDocumento = @array_tipo_documento.join(",")
 
     if @sistema_id  != '0' && @proceso_id == '0' && tipoDocumento == '0'
@@ -543,8 +543,8 @@ class PermisoDocumentosController < ApplicationController
       @tipoDocumento_documento = Documento.where("estado ='A' and tipo_documento_id in(#{tipoDocumento}) or tipo_documento_id=0").order("id asc")
 
     else
-      @tipoDocumento_documento = Documento.where("estado is null").order("id asc")
-    end    
+      @tipoDocumento_documento = Documento.where(id: 0).order("id asc")
+    end
 
     respond_to do |format|
       format.json { render json: @tipoDocumento_documento.map { |e| { id_documentos: e.id, codigo_documentos: e.codigo.nil? ? '' : e.codigo, correlativo_documentos: e.correlativo.nil? ? '' : format_digitos(e.correlativo), nombress: e.nombre } } }
@@ -567,17 +567,17 @@ class PermisoDocumentosController < ApplicationController
                                                         INNER JOIN TIPO_PROCESOS  ON(PROCESOS.TIPO_PROCESO_ID=TIPO_PROCESOS.ID)")
                                                 .order("NOMBRE_CLASIFICA_DOCUMENTO, NOMBRE_TIPO_SISTEMA")
 
-    @nombre_columnas = []    
+    @nombre_columnas = []
     @ids_columnas = []
 
-    @nombre_columnas.push("CLASIFICACIÓN DOCUMENTO")    
+    @nombre_columnas.push("CLASIFICACIÓN DOCUMENTO")
     @nombre_columnas.push("SISTEMA")
     @nombre_columnas.push("PROCESO")
     @nombre_columnas.push("TIPO_DOCUMENTO")
     @nombre_columnas.push("DOCUMENTO")
     @nombre_columnas.push("ESTADO")
     @nombre_columnas.push("FECHA CREACIÓN DE PERMISOS")
-    
+
     @ids_columnas.push("CD")
     @ids_columnas.push("NTS")
     @ids_columnas.push("NP")
@@ -585,11 +585,11 @@ class PermisoDocumentosController < ApplicationController
     @ids_columnas.push("ND")
     @ids_columnas.push("EP")
     @ids_columnas.push("CP")
-   
-    render xlsx: 'formato-permiso-documento', 
+
+    render xlsx: 'formato-permiso-documento',
            template: 'permiso_documentos/template_excel_download.xlsx.axlsx'
-  end 
-  
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_permiso_documento
@@ -601,4 +601,3 @@ class PermisoDocumentosController < ApplicationController
       params.require(:permiso_documento).permit(:tipo_usuario_id, :proceso_id, :tipo_sistema_id, :documento_id, :todo, :user_created_id, :user_updated_id, :estado, :tipo_documento_id)
     end
 end
-

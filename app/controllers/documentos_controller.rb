@@ -4,50 +4,26 @@ class DocumentosController < ApplicationController
 
   # GET /documentos or /documentos.json
   def index
-    @permiso_usuario = PermisoDocumentoUsuario.select("permiso_documentos.proceso_id, permiso_documentos.tipo_sistema_id, permiso_documentos.tipo_documento_id, permiso_documentos.documento_id")
-                                              .joins("inner join permiso_documentos on(permiso_documento_usuarios.permiso_documento_id=permiso_documentos.id)
-                                                      where permiso_documento_usuarios.estado='A'
-                                                      and permiso_documentos.estado='A'
-                                                      and permiso_documento_usuarios.user_id=#{current_user.id}")
+    # Valida los permisos del usuario en session
+      @p_ver_pdf = tiene_permiso("BOTON VER PDF", "VER").present? ? true : false
+      @p_ver_word = tiene_permiso("BOTON VER WORD", "VER").present? ? true : false
+      @p_ver_excel = tiene_permiso("BOTON VER EXCEL", "VER").present? ? true : false
+      @p_editar_registro = tiene_permiso("BOTON EDITAR REGISTRO", "VER").present? ? true : false
+      @p_eliminar_registro = tiene_permiso("BOTON ELIMINAR REGISTRO", "VER").present? ? true : false
 
-    if !@permiso_usuario.blank?
+      @lista_sistema = DocumentoView.select(:tipo_sistema_id, :nombre_sistema)
+                                    .permiso_para_usuario(current_user.id)
+
       @lista_procesos = DocumentoView.select("DOCUMENTOS_VIEWS.PROCESO_ID, DOCUMENTOS_VIEWS.NOMBRE_PROCESO")
                                      .joins("INNER JOIN PERMISO_DOCUMENTOS ON(DOCUMENTOS_VIEWS.ID=PERMISO_DOCUMENTOS.DOCUMENTO_ID)
                                              INNER JOIN PERMISO_DOCUMENTO_USUARIOS ON(PERMISO_DOCUMENTOS.ID=PERMISO_DOCUMENTO_USUARIOS.PERMISO_DOCUMENTO_ID)")
                                       .where("PERMISO_DOCUMENTO_USUARIOS.USER_ID=?",current_user.id).distinct
 
-      if session[:filtroProcesoDocumento].nil?
-        @procesoDocumento = DocumentoView.select("DOCUMENTOS_VIEWS.PROCESO_ID, DOCUMENTOS_VIEWS.NOMBRE_PROCESO")
-                                         .joins("INNER JOIN PERMISO_DOCUMENTOS ON(DOCUMENTOS_VIEWS.ID=PERMISO_DOCUMENTOS.DOCUMENTO_ID)
-                                                INNER JOIN PERMISO_DOCUMENTO_USUARIOS ON(PERMISO_DOCUMENTOS.ID=PERMISO_DOCUMENTO_USUARIOS.PERMISO_DOCUMENTO_ID)")
-                                         .where("PERMISO_DOCUMENTO_USUARIOS.USER_ID=?",current_user.id).distinct
 
-        if !@procesoDocumento.blank?
-          @proceso_select = ""
-        end
-      else
-        @proceso_select = session[:filtroProcesoDocumento]
-
-        if @proceso_select.blank?
-          @procesoDocumento = ""
-        else
-          @procesoDocumento = DocumentoView.select("DOCUMENTOS_VIEWS.PROCESO_ID, DOCUMENTOS_VIEWS.NOMBRE_PROCESO")
-                                         .joins("INNER JOIN PERMISO_DOCUMENTOS ON(DOCUMENTOS_VIEWS.ID=PERMISO_DOCUMENTOS.DOCUMENTO_ID)
-                                                INNER JOIN PERMISO_DOCUMENTO_USUARIOS ON(PERMISO_DOCUMENTOS.ID=PERMISO_DOCUMENTO_USUARIOS.PERMISO_DOCUMENTO_ID)")
-                                         .where("PERMISO_DOCUMENTO_USUARIOS.USER_ID=? AND DOCUMENTOS_VIEWS.PROCESO_ID IN(?)",current_user.id,@proceso_select).distinct
-        end
-      end
-
-      respond_to do |format|    
+      respond_to do |format|
         format.html
         format.json { render json: DocumentoDatatable.new(params, view_context: view_context, proceso_id: @proceso_select) }
       end
-    else
-      respond_to do |format|
-        format.html { redirect_to root_url, alert: "No tiene permiso suficiente, Favor comunicarse con el Área de Sistema de Gestión" }
-        format.json { render :show, status: :created, location: @permiso_usuario }
-      end
-    end
 
     @tituloBotonSubmit = "FILTRAR"
     @colorBotonSubmit = "btn btn-primary btn-sm"
@@ -61,7 +37,7 @@ class DocumentosController < ApplicationController
     else
       session[:filtroProcesoDocumento] = nil
     end
-    
+
     redirect_to documentos_path
   end
 
@@ -146,17 +122,17 @@ class DocumentosController < ApplicationController
   # PATCH/PUT /documentos/1 or /documentos/1.json
   def update
     key_compuesto = params[:documento][:proceso_id]
-    array_key = key_compuesto.split("|")    
+    array_key = key_compuesto.split("|")
     proceso = array_key[2]
 
     if params[:documento][:tipo_documento_id].include?('|')
       key_compuesto_tipo_doc = params[:documento][:tipo_documento_id]
-      array_key_tipo_doc = key_compuesto_tipo_doc.split("|")    
+      array_key_tipo_doc = key_compuesto_tipo_doc.split("|")
       tipo_documento = array_key_tipo_doc[3]
     else
       tipo_documento = params[:documento][:tipo_documento_id]
     end
-    
+
     tipo_sistema = params[:documento][:tipo_sistema_id]
     codigo = params[:documento][:codigo]
     correlativo = params[:documento][:correlativo]
@@ -187,7 +163,7 @@ class DocumentosController < ApplicationController
         if @documento.save
           genera_bitacora("DOCUMENTO_AUTORIZADO", @documento.codigo, @documento.correlativo, @documento.nombre, @documento.fecha_vigencia, @documento.version, @documento.descripcion, @documento.estado, @documento.user_created_id, @documento.user_updated_id,
                           @documento.empresa_id, @documento.proceso_id, @documento.tipo_sistema_id, @documento.id, @documento.tipo_documento_id, @documento.estado_documento_id, nil, nil, nil, nil)
-          
+
           format.html { redirect_to documentos_url, notice: "El codigo #{@documento.codigo.upcase}#{@documento.correlativo} se ha actualizado correctamente." }
           format.json { render :show, status: :ok, location: @documento }
         else

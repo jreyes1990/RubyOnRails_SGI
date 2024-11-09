@@ -1,4 +1,5 @@
 class UsuariosController < ApplicationController
+  include ManageStatus
   before_action :set_usuario, only: [:show, :edit, :update, :destroy]
   before_action :comprobar_permiso
 
@@ -13,6 +14,9 @@ class UsuariosController < ApplicationController
 
   def agregar_usuario
     @empresa = Empresa.where(:estado =>'A').limit(10)
+    @usuario = User.new
+    @persona = Persona.new
+    @persona_areas = PersonasArea.new
   end
 
   def crear_usuario
@@ -22,40 +26,62 @@ class UsuariosController < ApplicationController
     @usuario.password = generate_temp_password
     @nombre_completo = params[:usuario_form][:nombre] + " " + params[:usuario_form][:apellido]
 
-    begin
+    ActiveRecord::Base.transaction do
+      guardar_con_manejo_de_excepciones(@usuario, "No se pudo crear el usuario", "Error de base de datos al crear el usuario")
+
+      @persona = Persona.new(persona_params)
+      @persona.user_id = @usuario.id
+
+      guardar_con_manejo_de_excepciones(@persona, "No se pudo crear la persona", "Error de base de datos al crear la persona")
+
+      @persona_areas = PersonasArea.new(persona_area_params)
+      @persona_areas.persona_id = @persona.id
+      @persona_areas.area_id = params[:usuario_form][:area_id]
+
+      guardar_con_manejo_de_excepciones(@persona_areas, "No se pudo asignar la persona a una área", "Error de base de datos al asignar a la persona a una área")
+
       respond_to do |format|
-        if @usuario.save
-          @persona = Persona.where("user_id = ?", @usuario.id).first
-          if @persona.update(persona_params)
-            # Envío de correo electrónico
-            UserMailer.registro_exitoso(@nombre_completo, @usuario.password, @usuario.email).deliver_now
-
-            area_id = params[:usuario_form][:area_id]
-            @persona_areas = PersonasArea.new
-            @persona_areas.persona_id = @persona.id
-            @persona_areas.area_id = area_id
-            @persona_areas.estado = 'A'
-            @persona_areas.user_created_id = current_user.id
-
-            if @persona_areas.save
-              format.html { redirect_to usuarios_index_path, notice: 'Usuario creado exitosamente.' }
-            else
-              flash[:alert] = "No se pudo asignar la persona a una área"
-              redirect_to usuarios_index_path
-            end
-          else
-            flash[:alert] = "No se pudo crear la persona"
-            redirect_to usuarios_index_path
-          end
-        else
-          flash[:alert] = "No se pudo crear el usuario"
-          redirect_to usuarios_index_path
-
-        end
+        # Envío de correo electrónico
+        UserMailer.registro_exitoso(@nombre_completo, @usuario.password, @usuario.email).deliver_now
+        format.html { redirect_to usuarios_index_path, notice: "El usuario [ <strong>#{@nombre_completo.upcase}</strong> ] se ha creado correctamente.".html_safe }
+        format.json { render :show, status: :ok, location: usuarios_index_path }
       end
-    rescue Exception => e
-        puts "Error General: #{e.message}"
     end
+
+    # begin
+    #   respond_to do |format|
+    #     if @usuario.save
+    #       @persona = Persona.where("user_id = ?", @usuario.id).first
+    #       if @persona.update(persona_params)
+    #         # Envío de correo electrónico
+    #         UserMailer.registro_exitoso(@nombre_completo, @usuario.password, @usuario.email).deliver_now
+
+    #         area_id = params[:usuario_form][:area_id]
+    #         @persona_areas = PersonasArea.new
+    #         @persona_areas.persona_id = @persona.id
+    #         @persona_areas.area_id = area_id
+    #         @persona_areas.estado = 'A'
+    #         @persona_areas.user_created_id = current_user.id
+
+    #         if @persona_areas.save
+    #           format.html { redirect_to usuarios_index_path, notice: 'Usuario creado exitosamente.' }
+    #         else
+    #           flash[:alert] = "No se pudo asignar la persona a una área"
+    #           redirect_to usuarios_index_path
+    #         end
+    #       else
+    #         flash[:alert] = "No se pudo crear la persona"
+    #         redirect_to usuarios_index_path
+    #       end
+    #     else
+    #       flash[:alert] = "No se pudo crear el usuario"
+    #       redirect_to usuarios_index_path
+
+    #     end
+    #   end
+    # rescue Exception => e
+    #     puts "Error General: #{e.message}"
+    # end
   end
 
   def search_area_empresa_usuario
@@ -92,6 +118,10 @@ class UsuariosController < ApplicationController
 
   def persona_params
     params.require(:usuario_form).permit(:nombre, :apellido, :telefono, :direccion, :user_created_id, :estado)
+  end
+
+  def persona_area_params
+    params.require(:usuario_form).permit(:persona_id, :area_id, :rol_id, :user_created_id, :estado)
   end
 
   def generate_temp_password(length = 8)
